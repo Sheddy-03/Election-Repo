@@ -1,0 +1,12 @@
+{
+  "name": "election-portal",
+  "version": "1.0.0",
+  "description": "Bende 2023 election results entry portal with admin centre and agent data entry",
+  "private": true,
+  "main": "src/server.js",
+  "engines": { "node": ">=22.13" },
+  "scripts": {
+    "start": "node --disable-warning=ExperimentalWarning src/server.js",
+    "test": "node --disable-warning=ExperimentalWarning --test test/*.test.js"
+  }
+}

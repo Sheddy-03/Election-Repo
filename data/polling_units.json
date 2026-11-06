@@ -1,0 +1,1714 @@
+[
+ {
+  "ward": "AMANKALU/AKOLIUFU",
+  "code": "01-04-01-001",
+  "name": "AMANKALU ALAYI-AMANKALU PRIM. SCH I",
+  "registered": 380,
+  "regClass": "C",
+  "group80": "20grp"
+ },
+ {
+  "ward": "AMANKALU/AKOLIUFU",
+  "code": "01-04-01-002",
+  "name": "AMANKALU ALAYI-AMANKALU PRIM. SCH II",
+  "registered": 667,
+  "regClass": "B",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "AMANKALU/AKOLIUFU",
+  "code": "01-04-01-003",
+  "name": "AMANKALU ALAYI-AMANKALU PRIM. SCH III",
+  "registered": 509,
+  "regClass": "C",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "AMANKALU/AKOLIUFU",
+  "code": "01-04-01-004",
+  "name": "AMANKALU ALAYI-AMANKALU PRIM. SCH IV",
+  "registered": 728,
+  "regClass": "B",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "AMANKALU/AKOLIUFU",
+  "code": "01-04-01-005",
+  "name": "AMAOJI-AMANKALU-AMAIGWE VILLAGE I",
+  "registered": 367,
+  "regClass": "C",
+  "group80": "20grp"
+ },
+ {
+  "ward": "AMANKALU/AKOLIUFU",
+  "code": "01-04-01-006",
+  "name": "AMAOJI-AMANKALU-AMAIGWE VILLAGE II",
+  "registered": 334,
+  "regClass": "C",
+  "group80": "20grp"
+ },
+ {
+  "ward": "AMANKALU/AKOLIUFU",
+  "code": "01-04-01-007",
+  "name": "AMAOJI-AMANKALU-AMAIGWE VILLAGE III",
+  "registered": 363,
+  "regClass": "C",
+  "group80": "20grp"
+ },
+ {
+  "ward": "AMANKALU/AKOLIUFU",
+  "code": "01-04-01-008",
+  "name": "AMAOKWE ELU-CENTRAL SCHOOL ALAYI I",
+  "registered": 862,
+  "regClass": "A",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "AMANKALU/AKOLIUFU",
+  "code": "01-04-01-009",
+  "name": "AMAOKWE ELU-CENTRAL SCHOOL ALAYI II",
+  "registered": 555,
+  "regClass": "B",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "AMANKALU/AKOLIUFU",
+  "code": "01-04-01-010",
+  "name": "EZIALAYI-EZIALAYI COMM.SCH I",
+  "registered": 774,
+  "regClass": "A",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "AMANKALU/AKOLIUFU",
+  "code": "01-04-01-011",
+  "name": "EZIALAYI-EZIALAYI COMM.SCH II",
+  "registered": 706,
+  "regClass": "B",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "AMANKALU/AKOLIUFU",
+  "code": "01-04-01-012",
+  "name": "UMUENYERE-UMUENYERE PRIM.SCH I",
+  "registered": 871,
+  "regClass": "A",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "AMANKALU/AKOLIUFU",
+  "code": "01-04-01-013",
+  "name": "UMUENYERE-UMUENYERE PRIM.SCH II",
+  "registered": 742,
+  "regClass": "B",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "AMANKALU/AKOLIUFU",
+  "code": "01-04-01-014",
+  "name": "AMAOKWE-AMANKALU- AMAOKU PRIM.SCH",
+  "registered": 705,
+  "regClass": "B",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "AMANKALU/AKOLIUFU",
+  "code": "01-04-01-015",
+  "name": "AMAOKWE-AMANKALU- EZE OKWUKWU PRIM.SCH",
+  "registered": 385,
+  "regClass": "C",
+  "group80": "20grp"
+ },
+ {
+  "ward": "AMANKALU/AKOLIUFU",
+  "code": "01-04-01-016",
+  "name": "AMAEKEALAYI-AGBOR AKOLI VILLAGE",
+  "registered": 503,
+  "regClass": "C",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "AMANKALU/AKOLIUFU",
+  "code": "01-04-01-017",
+  "name": "AMAEKEALAYI-AMAEKE MKT.SQUARE",
+  "registered": 874,
+  "regClass": "A",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "AMANKALU/AKOLIUFU",
+  "code": "01-04-01-018",
+  "name": "AKOLIFU-AMANKUMA EZE ALAYI VILLAGE SQUARE",
+  "registered": 369,
+  "regClass": "C",
+  "group80": "20grp"
+ },
+ {
+  "ward": "AMANKALU/AKOLIUFU",
+  "code": "01-04-01-019",
+  "name": "AMANKALU-OKPUFU VILLAGE HALL",
+  "registered": 795,
+  "regClass": "A",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "AMANKALU/AKOLIUFU",
+  "code": "01-04-01-020",
+  "name": "EZIALAYI TOWN HALL",
+  "registered": 192,
+  "regClass": "D",
+  "group80": "20grp"
+ },
+ {
+  "ward": "AMANKALU/AKOLIUFU",
+  "code": "01-04-01-021",
+  "name": "AMABA UMUENYERE VILLAGE HALL",
+  "registered": 201,
+  "regClass": "D",
+  "group80": "20grp"
+ },
+ {
+  "ward": "AMANKALU/AKOLIUFU",
+  "code": "01-04-01-022",
+  "name": "OBU-UKWU AMAEKE HALL",
+  "registered": 75,
+  "regClass": "D",
+  "group80": "20grp"
+ },
+ {
+  "ward": "BENDE",
+  "code": "01-04-02-001",
+  "name": "ETITIULO-ETITIULO PRIM.SCH",
+  "registered": 1290,
+  "regClass": "A",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "BENDE",
+  "code": "01-04-02-002",
+  "name": "AMAOGWU-AMAOGWU TOWN HALL",
+  "registered": 1082,
+  "regClass": "A",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "BENDE",
+  "code": "01-04-02-003",
+  "name": "AGBOMIRI-AGBOMIRI TOWN HALL",
+  "registered": 339,
+  "regClass": "C",
+  "group80": "20grp"
+ },
+ {
+  "ward": "BENDE",
+  "code": "01-04-02-004",
+  "name": "NDIOKORIEUKWU-NDIOKORIEUKWU TOWN HALL",
+  "registered": 611,
+  "regClass": "B",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "BENDE",
+  "code": "01-04-02-005",
+  "name": "OKPUTONG-OKPUTONG TOWN HALL I",
+  "registered": 815,
+  "regClass": "A",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "BENDE",
+  "code": "01-04-02-006",
+  "name": "OKPUTONG-OKPUTONG TOWN HALL II",
+  "registered": 690,
+  "regClass": "B",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "BENDE",
+  "code": "01-04-02-007",
+  "name": "OKPUTONG-OKPUTONG TOWN HALL III",
+  "registered": 623,
+  "regClass": "B",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "BENDE",
+  "code": "01-04-02-008",
+  "name": "OKPUTONG-NDIEKEUGO VILLAGE HALL",
+  "registered": 242,
+  "regClass": "D",
+  "group80": "20grp"
+ },
+ {
+  "ward": "BENDE",
+  "code": "01-04-02-009",
+  "name": "OKPUTONG-MOTOR PARK BENDE",
+  "registered": 389,
+  "regClass": "C",
+  "group80": "20grp"
+ },
+ {
+  "ward": "BENDE",
+  "code": "01-04-02-010",
+  "name": "AMAOBA/OKPUTONG-AFO BENDE MKT.SQUARE",
+  "registered": 326,
+  "regClass": "C",
+  "group80": "20grp"
+ },
+ {
+  "ward": "BENDE",
+  "code": "01-04-02-011",
+  "name": "AMAOBA-CENTRAL SCHOOL BENDE",
+  "registered": 871,
+  "regClass": "A",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "BENDE",
+  "code": "01-04-02-012",
+  "name": "UMUORIE-UMUORIE TOWN HALL",
+  "registered": 873,
+  "regClass": "A",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "BENDE",
+  "code": "01-04-02-013",
+  "name": "ONUINYANG-ONUINYANG VILLAGE HALL",
+  "registered": 687,
+  "regClass": "B",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "BENDE",
+  "code": "01-04-02-014",
+  "name": "UKPOM-UKPOM VILLAGE SQUARE",
+  "registered": 334,
+  "regClass": "C",
+  "group80": "20grp"
+ },
+ {
+  "ward": "BENDE",
+  "code": "01-04-02-015",
+  "name": "OKPOROEENYI-OKPOROENYI CENTRAL SCHOOL",
+  "registered": 783,
+  "regClass": "A",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "BENDE",
+  "code": "01-04-02-016",
+  "name": "OKPOROEENYI-ISINKPU VILLAGE HALL",
+  "registered": 697,
+  "regClass": "B",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "BENDE",
+  "code": "01-04-02-017",
+  "name": "ISIALA TOWN HALL",
+  "registered": 163,
+  "regClass": "D",
+  "group80": "20grp"
+ },
+ {
+  "ward": "BENDE",
+  "code": "01-04-02-018",
+  "name": "ISIEGBU VILLAGE HALL",
+  "registered": 224,
+  "regClass": "D",
+  "group80": "20grp"
+ },
+ {
+  "ward": "BENDE",
+  "code": "01-04-02-019",
+  "name": "AGBAMUZU TOWN HALL",
+  "registered": 303,
+  "regClass": "C",
+  "group80": "20grp"
+ },
+ {
+  "ward": "UGWUEKE/EZEUKWU",
+  "code": "01-04-03-001",
+  "name": "AMAEZE-AMAEZE PRIM.SCH",
+  "registered": 803,
+  "regClass": "A",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "UGWUEKE/EZEUKWU",
+  "code": "01-04-03-002",
+  "name": "NDI ELU-NDI ELU PRIM.SCH I",
+  "registered": 939,
+  "regClass": "A",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "UGWUEKE/EZEUKWU",
+  "code": "01-04-03-003",
+  "name": "NDI ELU-NDI ELU PRIM.SCH II",
+  "registered": 786,
+  "regClass": "A",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "UGWUEKE/EZEUKWU",
+  "code": "01-04-03-004",
+  "name": "AMABA/UGWUEKE-AMABA/UGWUEEKE CENT.SCH",
+  "registered": 825,
+  "regClass": "A",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "UGWUEKE/EZEUKWU",
+  "code": "01-04-03-005",
+  "name": "AMABA/UGWUEKE-AMABA COMM.SCHOOL",
+  "registered": 999,
+  "regClass": "A",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "UGWUEKE/EZEUKWU",
+  "code": "01-04-03-006",
+  "name": "ISIEKE-ISIEKE MKT SQUARE",
+  "registered": 902,
+  "regClass": "A",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "UGWUEKE/EZEUKWU",
+  "code": "01-04-03-007",
+  "name": "NDI AGBO-NDI AGBO VILLAGE HALL",
+  "registered": 626,
+  "regClass": "B",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "UGWUEKE/EZEUKWU",
+  "code": "01-04-03-008",
+  "name": "AMAOKAI-AMAOKAI TOWN HALL",
+  "registered": 945,
+  "regClass": "A",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "UGWUEKE/EZEUKWU",
+  "code": "01-04-03-009",
+  "name": "EZEUKWU-CENTRAL SCH.EZEUKWU",
+  "registered": 723,
+  "regClass": "B",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "UGWUEKE/EZEUKWU",
+  "code": "01-04-03-010",
+  "name": "EZEUKWU-.EZENTA TOWN HALL",
+  "registered": 473,
+  "regClass": "C",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "UGWUEKE/EZEUKWU",
+  "code": "01-04-03-011",
+  "name": "EZEUKWU-.AMANGWU VILLAGE HALL EZEUKWU",
+  "registered": 640,
+  "regClass": "B",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "UGWUEKE/EZEUKWU",
+  "code": "01-04-03-012",
+  "name": "EZEUKWU-.AMANGWU VILLAGE HALL",
+  "registered": 465,
+  "regClass": "C",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "UGWUEKE/EZEUKWU",
+  "code": "01-04-03-013",
+  "name": "UMUANYAM AMAEZE UGWUEKE",
+  "registered": 73,
+  "regClass": "D",
+  "group80": "20grp"
+ },
+ {
+  "ward": "UGWUEKE/EZEUKWU",
+  "code": "01-04-03-014",
+  "name": "UMUAJA HALL NDIELU",
+  "registered": 299,
+  "regClass": "C",
+  "group80": "20grp"
+ },
+ {
+  "ward": "UGWUEKE/EZEUKWU",
+  "code": "01-04-03-015",
+  "name": "AMANTA VILLAGE HALL",
+  "registered": 18,
+  "regClass": "D",
+  "group80": "20grp"
+ },
+ {
+  "ward": "UGWUEKE/EZEUKWU",
+  "code": "01-04-03-016",
+  "name": "AMANKPA HALL",
+  "registered": 481,
+  "regClass": "C",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "UGWUEKE/EZEUKWU",
+  "code": "01-04-03-017",
+  "name": "AMAOKAI PRIMARY SCHOOL",
+  "registered": 91,
+  "regClass": "D",
+  "group80": "20grp"
+ },
+ {
+  "ward": "IGBERE 'A'",
+  "code": "01-04-04-001",
+  "name": "ONUIBINA-ONUIBINA PRIM.SCH I",
+  "registered": 964,
+  "regClass": "A",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "IGBERE 'A'",
+  "code": "01-04-04-002",
+  "name": "ONUIBINA-ONUIBINA PRIM.SCH II",
+  "registered": 762,
+  "regClass": "B",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "IGBERE 'A'",
+  "code": "01-04-04-003",
+  "name": "ONUIBINA-ULONKUMA",
+  "registered": 698,
+  "regClass": "B",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "IGBERE 'A'",
+  "code": "01-04-04-004",
+  "name": "EZIIGBERE-EZIIGBERE COMM. SCH I",
+  "registered": 783,
+  "regClass": "A",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "IGBERE 'A'",
+  "code": "01-04-04-005",
+  "name": "EZIIGBERE-EZIIGBERE COMM. SCH II",
+  "registered": 742,
+  "regClass": "B",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "IGBERE 'A'",
+  "code": "01-04-04-006",
+  "name": "ONUIBINA-ULO NKUMA",
+  "registered": 597,
+  "regClass": "B",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "IGBERE 'A'",
+  "code": "01-04-04-007",
+  "name": "AMANKALU-AMANKALU PRIM.SCH I",
+  "registered": 619,
+  "regClass": "B",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "IGBERE 'A'",
+  "code": "01-04-04-008",
+  "name": "AMANKALU-AMANKALU PRIM.SCH II",
+  "registered": 502,
+  "regClass": "C",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "IGBERE 'A'",
+  "code": "01-04-04-009",
+  "name": "AMANKALU-AMANKALU PRIM.SCH III",
+  "registered": 470,
+  "regClass": "C",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "IGBERE 'A'",
+  "code": "01-04-04-010",
+  "name": "AMANKALU-OKPOSI PRIM.SCH",
+  "registered": 359,
+  "regClass": "C",
+  "group80": "20grp"
+ },
+ {
+  "ward": "IGBERE 'A'",
+  "code": "01-04-04-011",
+  "name": "UMUISI- UMUISI VILLAGE SQ. I",
+  "registered": 200,
+  "regClass": "D",
+  "group80": "20grp"
+ },
+ {
+  "ward": "IGBERE 'A'",
+  "code": "01-04-04-012",
+  "name": "UMUISI- UMUISI VILLAGE HALL  I I",
+  "registered": 299,
+  "regClass": "C",
+  "group80": "20grp"
+ },
+ {
+  "ward": "IGBERE 'A'",
+  "code": "01-04-04-013",
+  "name": "ELUOKWE- UMUISI HALL",
+  "registered": 305,
+  "regClass": "C",
+  "group80": "20grp"
+ },
+ {
+  "ward": "IGBERE 'A'",
+  "code": "01-04-04-014",
+  "name": "ONUIBINA IGBERE HALL",
+  "registered": 278,
+  "regClass": "D",
+  "group80": "20grp"
+ },
+ {
+  "ward": "IGBERE 'B'",
+  "code": "01-04-05-001",
+  "name": "OKPOSI-EZIAMA HALL",
+  "registered": 631,
+  "regClass": "B",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "IGBERE 'B'",
+  "code": "01-04-05-002",
+  "name": "OKPOSI-AGBO IGBERE VILLAGE HALL",
+  "registered": 252,
+  "regClass": "D",
+  "group80": "20grp"
+ },
+ {
+  "ward": "IGBERE 'B'",
+  "code": "01-04-05-003",
+  "name": "AGBO IGBERE-AGBO IGBERE VILLAGE HALL",
+  "registered": 316,
+  "regClass": "C",
+  "group80": "20grp"
+ },
+ {
+  "ward": "IGBERE 'B'",
+  "code": "01-04-05-004",
+  "name": "ELUOKWE-COMM.SCHOOL ELUOKWE",
+  "registered": 557,
+  "regClass": "B",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "IGBERE 'B'",
+  "code": "01-04-05-005",
+  "name": "EZI- IGBERE AMAOJI",
+  "registered": 691,
+  "regClass": "B",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "IGBERE 'B'",
+  "code": "01-04-05-006",
+  "name": "ELUOKWE-IBINATA HALL I",
+  "registered": 612,
+  "regClass": "B",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "IGBERE 'B'",
+  "code": "01-04-05-007",
+  "name": "ELUOKWE-IBINATA HALL II",
+  "registered": 430,
+  "regClass": "C",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "IGBERE 'B'",
+  "code": "01-04-05-008",
+  "name": "AMATO-AMATO COMM. SCH",
+  "registered": 743,
+  "regClass": "B",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "IGBERE 'B'",
+  "code": "01-04-05-009",
+  "name": "AMATO-AMOJI HALL",
+  "registered": 414,
+  "regClass": "C",
+  "group80": "20grp"
+ },
+ {
+  "ward": "IGBERE 'B'",
+  "code": "01-04-05-010",
+  "name": "OHUMOLA-OHUMOLA VILL. HALL. I",
+  "registered": 302,
+  "regClass": "C",
+  "group80": "20grp"
+ },
+ {
+  "ward": "IGBERE 'B'",
+  "code": "01-04-05-011",
+  "name": "OHUMOLA-OHUMOLA VILL. SQ. II",
+  "registered": 220,
+  "regClass": "D",
+  "group80": "20grp"
+ },
+ {
+  "ward": "ITEM A",
+  "code": "01-04-06-001",
+  "name": "AMAOKWE - CENTRE SCH. AMAOKWE",
+  "registered": 1236,
+  "regClass": "A",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "ITEM A",
+  "code": "01-04-06-002",
+  "name": "AMAOKWE - AFOR MKT. SQUARE I",
+  "registered": 852,
+  "regClass": "A",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "ITEM A",
+  "code": "01-04-06-003",
+  "name": "AMAOKWE - AFOR MKT. SQUARE II",
+  "registered": 866,
+  "regClass": "A",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "ITEM A",
+  "code": "01-04-06-004",
+  "name": "AMAOKWE - COMM. SCH. AMAOKWE",
+  "registered": 729,
+  "regClass": "B",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "ITEM A",
+  "code": "01-04-06-005",
+  "name": "UMUNNEATO - UMUNNEATO CENT. SCHOOL",
+  "registered": 759,
+  "regClass": "B",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "ITEM A",
+  "code": "01-04-06-006",
+  "name": "UMUNNEATO - VOC. TRAINING CENTRE",
+  "registered": 234,
+  "regClass": "D",
+  "group80": "20grp"
+ },
+ {
+  "ward": "ITEM A",
+  "code": "01-04-06-007",
+  "name": "AMAEKE - AMAEKE ITEM TOWN HALL",
+  "registered": 1035,
+  "regClass": "A",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "ITEM A",
+  "code": "01-04-06-008",
+  "name": "APANU - COMM. SCHOOL APANU",
+  "registered": 481,
+  "regClass": "C",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "ITEM A",
+  "code": "01-04-06-009",
+  "name": "APANU - EGODINOHIA HALL APANU I",
+  "registered": 514,
+  "regClass": "C",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "ITEM A",
+  "code": "01-04-06-010",
+  "name": "APANU - EGODINOHIA HALL APANU II",
+  "registered": 408,
+  "regClass": "C",
+  "group80": "20grp"
+ },
+ {
+  "ward": "ITEM A",
+  "code": "01-04-06-011",
+  "name": "AMAEKEPU - COMM. SCH AMAEKEPU I",
+  "registered": 535,
+  "regClass": "B",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "ITEM A",
+  "code": "01-04-06-012",
+  "name": "AMAEKPU - COMM. SCH AMAEKPU II",
+  "registered": 284,
+  "regClass": "C",
+  "group80": "20grp"
+ },
+ {
+  "ward": "ITEM A",
+  "code": "01-04-06-013",
+  "name": "AMAEKPU - AMAEKPU MKT. SQUARE",
+  "registered": 468,
+  "regClass": "C",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "ITEM A",
+  "code": "01-04-06-014",
+  "name": "AMAEKPU - AMAEKPU COMM. SCHOOL I",
+  "registered": 416,
+  "regClass": "C",
+  "group80": "20grp"
+ },
+ {
+  "ward": "ITEM A",
+  "code": "01-04-06-015",
+  "name": "AMAEKPU - AMAEKPU COMM. SCHOOL II",
+  "registered": 482,
+  "regClass": "C",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "ITEM A",
+  "code": "01-04-06-016",
+  "name": "APANU - AMAOLU HALL",
+  "registered": 462,
+  "regClass": "C",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "ITEM A",
+  "code": "01-04-06-017",
+  "name": "EKWO CIVIC CENTRE",
+  "registered": 152,
+  "regClass": "D",
+  "group80": "20grp"
+ },
+ {
+  "ward": "ITEM A",
+  "code": "01-04-06-018",
+  "name": "AMA-UGBA COMMUNITY HALL",
+  "registered": 2,
+  "regClass": "D",
+  "group80": "20grp"
+ },
+ {
+  "ward": "ITEM A",
+  "code": "01-04-06-019",
+  "name": "EZIUFU VILLAGE SQUARE",
+  "registered": 275,
+  "regClass": "D",
+  "group80": "20grp"
+ },
+ {
+  "ward": "ITEM B",
+  "code": "01-04-07-001",
+  "name": "EZI UFU OKOKO - EZI UFU HALL",
+  "registered": 521,
+  "regClass": "C",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "ITEM B",
+  "code": "01-04-07-002",
+  "name": "EZI UFU OKOKO - EKENTA SQUARE",
+  "registered": 969,
+  "regClass": "A",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "ITEM B",
+  "code": "01-04-07-003",
+  "name": "OKOKO - CENTRAL SCH. OKOKO",
+  "registered": 542,
+  "regClass": "B",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "ITEM B",
+  "code": "01-04-07-004",
+  "name": "OKOKO - AMAIYI HALL",
+  "registered": 557,
+  "regClass": "B",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "ITEM B",
+  "code": "01-04-07-005",
+  "name": "UMUKOMA ITEM - UMUKOMA HALL",
+  "registered": 356,
+  "regClass": "C",
+  "group80": "20grp"
+ },
+ {
+  "ward": "ITEM B",
+  "code": "01-04-07-006",
+  "name": "OKOKO - IKETENWE HALL",
+  "registered": 575,
+  "regClass": "B",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "ITEM B",
+  "code": "01-04-07-007",
+  "name": "OKAGWE - CENTRAL SCH. OKAGWE",
+  "registered": 757,
+  "regClass": "B",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "ITEM B",
+  "code": "01-04-07-008",
+  "name": "AMAIGBO OKOKO - AMAIGBO PRI. SCH.",
+  "registered": 759,
+  "regClass": "B",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "ITEM B",
+  "code": "01-04-07-009",
+  "name": "AMAIGBO OKOKO - COMM. TECH. SCH. I",
+  "registered": 611,
+  "regClass": "B",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "ITEM B",
+  "code": "01-04-07-010",
+  "name": "AMAIGBO OKOKO - COMM. TECH. SCH. II",
+  "registered": 550,
+  "regClass": "B",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "ITEM B",
+  "code": "01-04-07-011",
+  "name": "EKENTA VILLAGE SQUARE",
+  "registered": 186,
+  "regClass": "D",
+  "group80": "20grp"
+ },
+ {
+  "ward": "ITEM C",
+  "code": "01-04-08-001",
+  "name": "AKANU - PRI. SCH. AKANU",
+  "registered": 652,
+  "regClass": "B",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "ITEM C",
+  "code": "01-04-08-002",
+  "name": "AKANU - AKANU MKT. SQUARE",
+  "registered": 616,
+  "regClass": "B",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "ITEM C",
+  "code": "01-04-08-003",
+  "name": "ELUGWU - ELUGWU AKANU I",
+  "registered": 389,
+  "regClass": "C",
+  "group80": "20grp"
+ },
+ {
+  "ward": "ITEM C",
+  "code": "01-04-08-004",
+  "name": "ELUGWU - ELUGWU AKANU II",
+  "registered": 421,
+  "regClass": "C",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "ITEM C",
+  "code": "01-04-08-005",
+  "name": "ELUGWU - ELUGWU AKANU III",
+  "registered": 379,
+  "regClass": "C",
+  "group80": "20grp"
+ },
+ {
+  "ward": "ITEM C",
+  "code": "01-04-08-006",
+  "name": "UMUAKPA - UMUAKA WOMEN HALL",
+  "registered": 509,
+  "regClass": "C",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "ITEM C",
+  "code": "01-04-08-007",
+  "name": "OKAI - OKAI MKT. SQUARE",
+  "registered": 752,
+  "regClass": "B",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "ITEM C",
+  "code": "01-04-08-008",
+  "name": "OKAI - UMUAKPA PRI. SCH.",
+  "registered": 297,
+  "regClass": "C",
+  "group80": "20grp"
+ },
+ {
+  "ward": "ITUMBAUZO",
+  "code": "01-04-09-001",
+  "name": "UMUOKPE - UMUOKPE VILLAGE HALL",
+  "registered": 257,
+  "regClass": "D",
+  "group80": "20grp"
+ },
+ {
+  "ward": "ITUMBAUZO",
+  "code": "01-04-09-002",
+  "name": "AMAEKE - AMAEKE VILLAGE HALL I",
+  "registered": 211,
+  "regClass": "D",
+  "group80": "20grp"
+ },
+ {
+  "ward": "ITUMBAUZO",
+  "code": "01-04-09-003",
+  "name": "AMAEKE - AMAEKE VILLAGE HALL II",
+  "registered": 119,
+  "regClass": "D",
+  "group80": "20grp"
+ },
+ {
+  "ward": "ITUMBAUZO",
+  "code": "01-04-09-004",
+  "name": "NDIOTI - NDIOTI VILLAGE HALL",
+  "registered": 195,
+  "regClass": "D",
+  "group80": "20grp"
+ },
+ {
+  "ward": "ITUMBAUZO",
+  "code": "01-04-09-005",
+  "name": "NTALAKWU - CENTRAL SCH. NTALAKWU I",
+  "registered": 348,
+  "regClass": "C",
+  "group80": "20grp"
+ },
+ {
+  "ward": "ITUMBAUZO",
+  "code": "01-04-09-006",
+  "name": "NTALAKWU - CENTRAL SCH. NTALAKWU II",
+  "registered": 255,
+  "regClass": "D",
+  "group80": "20grp"
+ },
+ {
+  "ward": "ITUMBAUZO",
+  "code": "01-04-09-007",
+  "name": "NTALAKWU - CENTRAL SCH. NTALAKWU III",
+  "registered": 413,
+  "regClass": "C",
+  "group80": "20grp"
+ },
+ {
+  "ward": "ITUMBAUZO",
+  "code": "01-04-09-008",
+  "name": "AKANU - AKANU VILLAGE HALL",
+  "registered": 258,
+  "regClass": "D",
+  "group80": "20grp"
+ },
+ {
+  "ward": "ITUMBAUZO",
+  "code": "01-04-09-009",
+  "name": "NDIWO - MKT. SQUARE NDIWO I",
+  "registered": 800,
+  "regClass": "A",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "ITUMBAUZO",
+  "code": "01-04-09-010",
+  "name": "NDIWO - MKT. SQUARE NDIWO II",
+  "registered": 726,
+  "regClass": "B",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "ITUMBAUZO",
+  "code": "01-04-09-011",
+  "name": "OKOPEDI - COMM. SCH. CAMPUS ONE",
+  "registered": 541,
+  "regClass": "B",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "ITUMBAUZO",
+  "code": "01-04-09-012",
+  "name": "AMAUDO - AMAUDO MBUKWA  HALL",
+  "registered": 344,
+  "regClass": "C",
+  "group80": "20grp"
+ },
+ {
+  "ward": "ITUMBAUZO",
+  "code": "01-04-09-013",
+  "name": "OKOPEDI - COMM. SCH. CAMPUS TWO",
+  "registered": 571,
+  "regClass": "B",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "ITUMBAUZO",
+  "code": "01-04-09-014",
+  "name": "NKPORO - NKPORO UBIBIA",
+  "registered": 443,
+  "regClass": "C",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "ITUMBAUZO",
+  "code": "01-04-09-015",
+  "name": "AMABA - COMM. SCH. AMABA",
+  "registered": 458,
+  "regClass": "C",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "ITUMBAUZO",
+  "code": "01-04-09-016",
+  "name": "NTUBI - NTUBI UBIBIA",
+  "registered": 504,
+  "regClass": "C",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "ITUMBAUZO",
+  "code": "01-04-09-017",
+  "name": "NDIUWA - NDIUWA VILLAGE HALL",
+  "registered": 287,
+  "regClass": "C",
+  "group80": "20grp"
+ },
+ {
+  "ward": "OZUITEM",
+  "code": "01-04-10-001",
+  "name": "ETITI OZU - ETITI OZU PRI. SCH. I",
+  "registered": 565,
+  "regClass": "B",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "OZUITEM",
+  "code": "01-04-10-002",
+  "name": "ETITI OZU - ETITI OZU PRI. SCH. II",
+  "registered": 642,
+  "regClass": "B",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "OZUITEM",
+  "code": "01-04-10-003",
+  "name": "ETITI OZU - ETITI OZU PRI. SCH. III",
+  "registered": 724,
+  "regClass": "B",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "OZUITEM",
+  "code": "01-04-10-004",
+  "name": "AMAEKE - AMAEKE ISIEGBU PRI. SCH.",
+  "registered": 593,
+  "regClass": "B",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "OZUITEM",
+  "code": "01-04-10-005",
+  "name": "AMAEKE - AMAEKE VILLAGE SQUARE",
+  "registered": 663,
+  "regClass": "B",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "OZUITEM",
+  "code": "01-04-10-006",
+  "name": "AMANKWO - CENTRAL SCH. OZUITEM",
+  "registered": 248,
+  "regClass": "D",
+  "group80": "20grp"
+ },
+ {
+  "ward": "OZUITEM",
+  "code": "01-04-10-007",
+  "name": "AMAGBO - AMAGBO VILLAGE HALL I",
+  "registered": 752,
+  "regClass": "B",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "OZUITEM",
+  "code": "01-04-10-008",
+  "name": "AMAGBO - AMAGBO VILLAGE HALL II",
+  "registered": 600,
+  "regClass": "B",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "OZUITEM",
+  "code": "01-04-10-009",
+  "name": "AMANKWO - AMANKWO VILLAGE HALL",
+  "registered": 265,
+  "regClass": "D",
+  "group80": "20grp"
+ },
+ {
+  "ward": "OZUITEM",
+  "code": "01-04-10-010",
+  "name": "ENEMBA - ENEMBA PRI. SCH. I",
+  "registered": 324,
+  "regClass": "C",
+  "group80": "20grp"
+ },
+ {
+  "ward": "OZUITEM",
+  "code": "01-04-10-011",
+  "name": "ENEMBA - ENEMBA PRI. SCH. II",
+  "registered": 375,
+  "regClass": "C",
+  "group80": "20grp"
+ },
+ {
+  "ward": "OZUITEM",
+  "code": "01-04-10-012",
+  "name": "UPE - ELUGWUMBA I",
+  "registered": 395,
+  "regClass": "C",
+  "group80": "20grp"
+ },
+ {
+  "ward": "OZUITEM",
+  "code": "01-04-10-013",
+  "name": "UPE - ELUGWUMBA II",
+  "registered": 355,
+  "regClass": "C",
+  "group80": "20grp"
+ },
+ {
+  "ward": "OZUITEM",
+  "code": "01-04-10-014",
+  "name": "ALAOMA - ALAOMA PRI. SCH. I",
+  "registered": 466,
+  "regClass": "C",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "OZUITEM",
+  "code": "01-04-10-015",
+  "name": "ALAOMA - ALAOMA PRI. SCH. II",
+  "registered": 522,
+  "regClass": "C",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "UMUHU / EZECHI",
+  "code": "01-04-11-001",
+  "name": "UMUHU - COMM. SCH. UMUHU",
+  "registered": 275,
+  "regClass": "D",
+  "group80": "20grp"
+ },
+ {
+  "ward": "UMUHU / EZECHI",
+  "code": "01-04-11-002",
+  "name": "UMUHU - AMACHI PRI. SCH.",
+  "registered": 520,
+  "regClass": "C",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "UMUHU / EZECHI",
+  "code": "01-04-11-003",
+  "name": "UMUHU - AMANGWU PRI. SCH.",
+  "registered": 138,
+  "regClass": "D",
+  "group80": "20grp"
+ },
+ {
+  "ward": "UMUHU / EZECHI",
+  "code": "01-04-11-004",
+  "name": "UMUHU - AMABUELU VILLAGE HALL",
+  "registered": 252,
+  "regClass": "D",
+  "group80": "20grp"
+ },
+ {
+  "ward": "UMUHU / EZECHI",
+  "code": "01-04-11-005",
+  "name": "UMUOKWE - COMM. SCH. UMUOKWE I",
+  "registered": 468,
+  "regClass": "C",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "UMUHU / EZECHI",
+  "code": "01-04-11-006",
+  "name": "UMUOKWE - COMM. SCH. UMUOKWE II",
+  "registered": 564,
+  "regClass": "B",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "UMUHU / EZECHI",
+  "code": "01-04-11-007",
+  "name": "UMUOKWE - COMM. SCH. UMUOKWE III",
+  "registered": 355,
+  "regClass": "C",
+  "group80": "20grp"
+ },
+ {
+  "ward": "UMUHU / EZECHI",
+  "code": "01-04-11-008",
+  "name": "EZECHI - EZECHI PRI. SCH. I",
+  "registered": 187,
+  "regClass": "D",
+  "group80": "20grp"
+ },
+ {
+  "ward": "UMUHU / EZECHI",
+  "code": "01-04-11-009",
+  "name": "EZECHI - EZECHI PRI. SCH. II",
+  "registered": 420,
+  "regClass": "C",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "UMUHU / EZECHI",
+  "code": "01-04-11-010",
+  "name": "EZECHI - AMAZU CIVIC CENTRE",
+  "registered": 626,
+  "regClass": "B",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "UMU - IMENYI",
+  "code": "01-04-12-001",
+  "name": "AMAOJI - COMM.  SCH. AMAOJI",
+  "registered": 598,
+  "regClass": "B",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "UMU - IMENYI",
+  "code": "01-04-12-002",
+  "name": "AKOLI - CENTRAL SCHOOL AKOLI I",
+  "registered": 742,
+  "regClass": "B",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "UMU - IMENYI",
+  "code": "01-04-12-003",
+  "name": "AKOLI - CENTRAL SCHOOL AKOLI II",
+  "registered": 556,
+  "regClass": "B",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "UMU - IMENYI",
+  "code": "01-04-12-004",
+  "name": "AKOLI - CENTRAL SCHOOL AKOLI III",
+  "registered": 499,
+  "regClass": "C",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "UMU - IMENYI",
+  "code": "01-04-12-005",
+  "name": "LODU - COMM. SCHOOL LODU",
+  "registered": 897,
+  "regClass": "A",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "UMU - IMENYI",
+  "code": "01-04-12-006",
+  "name": "LOHUM - CENTRAL  SCHOOL LOHUM I",
+  "registered": 820,
+  "regClass": "A",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "UMU - IMENYI",
+  "code": "01-04-12-007",
+  "name": "LOHUM - CENTRAL  SCHOOL LOHUM II",
+  "registered": 738,
+  "regClass": "B",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "UMU - IMENYI",
+  "code": "01-04-12-008",
+  "name": "AMAOJI - PRI. SCH. AMAOJI",
+  "registered": 501,
+  "regClass": "C",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "UMU - IMENYI",
+  "code": "01-04-12-009",
+  "name": "AMAEGBUATO - AMAEGBUATO PRI. SCH.",
+  "registered": 505,
+  "regClass": "C",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "UMU - IMENYI",
+  "code": "01-04-12-010",
+  "name": "AMAEGBUATO - NWEKE SQUARE",
+  "registered": 461,
+  "regClass": "C",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "UMU - IMENYI",
+  "code": "01-04-12-011",
+  "name": "AMAEGBUATO - UMUEGWU NKPA HALL",
+  "registered": 497,
+  "regClass": "C",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "UMU - IMENYI",
+  "code": "01-04-12-012",
+  "name": "AMAEGBUATO - AGBOIYI VILLAGE SQUARE",
+  "registered": 545,
+  "regClass": "B",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "UMU - IMENYI",
+  "code": "01-04-12-013",
+  "name": "ODUA - ODU NKPA VILLAGE HALL",
+  "registered": 257,
+  "regClass": "D",
+  "group80": "20grp"
+ },
+ {
+  "ward": "UMU - IMENYI",
+  "code": "01-04-12-014",
+  "name": "UMUIMENYI - COMM. SCHOOL UMUEDE",
+  "registered": 111,
+  "regClass": "D",
+  "group80": "20grp"
+ },
+ {
+  "ward": "UMU - IMENYI",
+  "code": "01-04-12-015",
+  "name": "NKPA - NKPA UKWA VILLAGE HALL",
+  "registered": 282,
+  "regClass": "C",
+  "group80": "20grp"
+ },
+ {
+  "ward": "UMU - IMENYI",
+  "code": "01-04-12-016",
+  "name": "NKPA - AMAEDUKWU VILLAGE HALL",
+  "registered": 708,
+  "regClass": "B",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "UMU - IMENYI",
+  "code": "01-04-12-017",
+  "name": "UMUOPARA - UMUOPARA TOWN HALL",
+  "registered": 236,
+  "regClass": "D",
+  "group80": "20grp"
+ },
+ {
+  "ward": "UMU - IMENYI",
+  "code": "01-04-12-018",
+  "name": "UMUALUKCHA - UMUALUKCHA TOWN HALL",
+  "registered": 261,
+  "regClass": "D",
+  "group80": "20grp"
+ },
+ {
+  "ward": "UMU - IMENYI",
+  "code": "01-04-12-019",
+  "name": "AMAIMO - AMAIMO TOWN HALL",
+  "registered": 286,
+  "regClass": "C",
+  "group80": "20grp"
+ },
+ {
+  "ward": "UMU - IMENYI",
+  "code": "01-04-12-020",
+  "name": "AMAOKPU - PRI. SCH. AMAOKPU",
+  "registered": 530,
+  "regClass": "B",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "UMU - IMENYI",
+  "code": "01-04-12-021",
+  "name": "AMAEDIABA - COMM. PRI. SCH. AMAEDIABA",
+  "registered": 390,
+  "regClass": "C",
+  "group80": "20grp"
+ },
+ {
+  "ward": "UMU - IMENYI",
+  "code": "01-04-12-022",
+  "name": "AMAEDIABA - AMAEDIABA MKT. SQUARE I",
+  "registered": 408,
+  "regClass": "C",
+  "group80": "20grp"
+ },
+ {
+  "ward": "UMU - IMENYI",
+  "code": "01-04-12-023",
+  "name": "AMAEDIABA - AMAEDIABA MKT. SQUARE II",
+  "registered": 173,
+  "regClass": "D",
+  "group80": "20grp"
+ },
+ {
+  "ward": "UMU - IMENYI",
+  "code": "01-04-12-024",
+  "name": "AMAOHORO - COMM. SEC. SCH. AMAOHORO",
+  "registered": 421,
+  "regClass": "C",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "UMU - IMENYI",
+  "code": "01-04-12-025",
+  "name": "UGWUNKPA - COMM. SEC. SCH. UGWUNKPA",
+  "registered": 441,
+  "regClass": "C",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "UMU - IMENYI",
+  "code": "01-04-12-026",
+  "name": "UGWUNKPA - UGWUNKPA HALL",
+  "registered": 450,
+  "regClass": "C",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "UMU - IMENYI",
+  "code": "01-04-12-027",
+  "name": "UGWUNKPA - AWU HALL",
+  "registered": 447,
+  "regClass": "C",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "UMU - IMENYI",
+  "code": "01-04-12-028",
+  "name": "AGBO-LODU VILLAGE HALL",
+  "registered": 248,
+  "regClass": "D",
+  "group80": "20grp"
+ },
+ {
+  "ward": "UMU - IMENYI",
+  "code": "01-04-12-029",
+  "name": "AMAEKE LOHUM VILLAGE HALL",
+  "registered": 189,
+  "regClass": "D",
+  "group80": "20grp"
+ },
+ {
+  "ward": "UZUAKOLI",
+  "code": "01-04-13-001",
+  "name": "AMAMBA - CENTRAL SCH. AMAMBA / AGBOZU",
+  "registered": 449,
+  "regClass": "C",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "UZUAKOLI",
+  "code": "01-04-13-002",
+  "name": "AMAMBA - AMAMBA VILLAGE HALL I",
+  "registered": 972,
+  "regClass": "A",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "UZUAKOLI",
+  "code": "01-04-13-003",
+  "name": "AMAMBA - AMAMBA VILLAGE HALL II",
+  "registered": 823,
+  "regClass": "A",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "UZUAKOLI",
+  "code": "01-04-13-004",
+  "name": "AMAMBA - AMAOZU VILLAGE HALL",
+  "registered": 789,
+  "regClass": "A",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "UZUAKOLI",
+  "code": "01-04-13-005",
+  "name": "NGWU - NGWU COMM. SCHOOL",
+  "registered": 407,
+  "regClass": "C",
+  "group80": "20grp"
+ },
+ {
+  "ward": "UZUAKOLI",
+  "code": "01-04-13-006",
+  "name": "NGWU - NGWU TOWN HALL",
+  "registered": 956,
+  "regClass": "A",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "UZUAKOLI",
+  "code": "01-04-13-007",
+  "name": "AMANKWO - AMANKWO VILLAGE HALL I",
+  "registered": 611,
+  "regClass": "B",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "UZUAKOLI",
+  "code": "01-04-13-008",
+  "name": "AMANKWO - AMANKWO VILLAGE HALL II",
+  "registered": 756,
+  "regClass": "B",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "UZUAKOLI",
+  "code": "01-04-13-009",
+  "name": "ELUAMA - PRACTISING SCHOOL UZUAKOLI I",
+  "registered": 1159,
+  "regClass": "A",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "UZUAKOLI",
+  "code": "01-04-13-010",
+  "name": "ELUAMA - PRACTISING SCHOOL UZUAKOLI II",
+  "registered": 863,
+  "regClass": "A",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "UZUAKOLI",
+  "code": "01-04-13-011",
+  "name": "ELUAMA - MKT. SQUARE UZUAKOLI",
+  "registered": 871,
+  "regClass": "A",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "UZUAKOLI",
+  "code": "01-04-13-012",
+  "name": "ELUAMA - OZUITEM RD. MOTOR PARK",
+  "registered": 671,
+  "regClass": "B",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "UZUAKOLI",
+  "code": "01-04-13-013",
+  "name": "ELUAMA - T.T.C UZUAKOLI",
+  "registered": 527,
+  "regClass": "B",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "UZUAKOLI",
+  "code": "01-04-13-014",
+  "name": "LEPROSY SET - SCH. ASSEMBLY LERP. SQUARE",
+  "registered": 340,
+  "regClass": "C",
+  "group80": "20grp"
+ },
+ {
+  "ward": "UZUAKOLI",
+  "code": "01-04-13-015",
+  "name": "AMUHI - AMUHI TOWN HALL",
+  "registered": 902,
+  "regClass": "A",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "UZUAKOLI",
+  "code": "01-04-13-016",
+  "name": "AMAMBA -  COMM. SCH. AMAMBA / AGBOZU",
+  "registered": 498,
+  "regClass": "C",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "UZUAKOLI",
+  "code": "01-04-13-017",
+  "name": "EKE-UKWU HALL",
+  "registered": 533,
+  "regClass": "B",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "UZUAKOLI",
+  "code": "01-04-13-018",
+  "name": "UMUACHAMA HALL",
+  "registered": 276,
+  "regClass": "D",
+  "group80": "20grp"
+ },
+ {
+  "ward": "UZUAKOLI",
+  "code": "01-04-13-019",
+  "name": "AGBOR NGWU HALL",
+  "registered": 537,
+  "regClass": "B",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "UZUAKOLI",
+  "code": "01-04-13-020",
+  "name": "AMAOGUDU HALL",
+  "registered": 513,
+  "regClass": "C",
+  "group80": "80Grp"
+ },
+ {
+  "ward": "UZUAKOLI",
+  "code": "01-04-13-021",
+  "name": "NDAGBO VILLAGE HALL",
+  "registered": 368,
+  "regClass": "C",
+  "group80": "20grp"
+ },
+ {
+  "ward": "UZUAKOLI",
+  "code": "01-04-13-022",
+  "name": "OVER-RAIL PRIMARY SCHOOL",
+  "registered": 392,
+  "regClass": "C",
+  "group80": "20grp"
+ }
+]
