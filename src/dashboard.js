@@ -1,19 +1,20 @@
 'use strict';
-const { db } = require('./db');
+const { query } = require('./db');
 const { CONTESTS, decorate } = require('./results');
 
 const CLASSES = ['A', 'B', 'C', 'D'];
 const GROUPS = ['80Grp', '20grp'];
 
-function loadAll() {
+async function loadAll() {
   const out = {};
   for (const key of Object.keys(CONTESTS)) {
-    out[key] = db.prepare(`
-      SELECT p.code, p.ward, p.name, p.registered, p.reg_class, p.group80, p.agent_id,
+    out[key] = (await query(`
+      SELECT p.code, p.ward, p.name, p.registered, p.reg_class, p.group80, p.agent_id, u.full_name AS agent_name,
              r.pdp, r.apc, r.lp, r.accredited, r.valid, r.rejected, r.notes, r.updated_at
       FROM polling_units p
-      LEFT JOIN results r ON r.pu_code = p.code AND r.contest = ?
-      ORDER BY p.code`).all(key).map(decorate);
+      LEFT JOIN results r ON r.pu_code = p.code AND r.contest = $1
+      LEFT JOIN users u ON u.id = p.agent_id
+      ORDER BY p.code`, [key])).map(decorate);
   }
   return out;
 }
@@ -21,9 +22,10 @@ function loadAll() {
 const sum = (rows, f) => rows.reduce((a, r) => a + (r[f] ?? 0), 0);
 const avg = (xs) => (xs.length ? xs.reduce((a, b) => a + b, 0) / xs.length : null);
 
-function buildDashboard(ward) {
-  const all = loadAll();
-  const wards = db.prepare('SELECT DISTINCT ward FROM polling_units ORDER BY rowid').all().map((r) => r.ward);
+async function buildDashboard(ward) {
+  const all = await loadAll();
+  // ward order = order of first appearance by PU code, as in the workbook
+  const wards = [...new Set(all.presidential.map((r) => r.ward))];
   const sel = ward && wards.includes(ward) ? ward : null;
   const inSel = (r) => !sel || r.ward === sel;
 
@@ -94,11 +96,12 @@ function buildDashboard(ward) {
   }
 
   // Agent progress (always whole-LGA)
-  const agents = db.prepare(`
+  const agentRows = await query(`
     SELECT u.id, u.username, u.full_name, u.active,
-           (SELECT COUNT(*) FROM polling_units p WHERE p.agent_id = u.id) AS assigned,
+           (SELECT COUNT(*)::int FROM polling_units p WHERE p.agent_id = u.id) AS assigned,
            (SELECT MAX(at) FROM audit_log a WHERE a.user_id = u.id AND a.action = 'result.save') AS last_entry
-    FROM users u WHERE u.role = 'agent' ORDER BY u.full_name`).all().map((a) => {
+    FROM users u WHERE u.role = 'agent' ORDER BY u.full_name`);
+  const agents = agentRows.map((a) => {
     const mine = puRows.filter((r) => r.agent_id === a.id).map((r) => r.code);
     const set = new Set(mine);
     const prog = {};

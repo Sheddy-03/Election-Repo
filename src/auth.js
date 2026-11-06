@@ -18,26 +18,10 @@ function verifyPassword(password, stored) {
 const sha = (s) => crypto.createHash('sha256').update(s).digest('hex');
 const newToken = () => crypto.randomBytes(32).toString('base64url');
 
-// Simple in-memory login throttle: 8 failures / 15 min per username+ip
-const fails = new Map();
-const WINDOW = 15 * 60 * 1000, MAX = 8;
-function throttled(key) {
-  const f = fails.get(key);
-  if (!f) return false;
-  if (Date.now() - f.first > WINDOW) { fails.delete(key); return false; }
-  return f.n >= MAX;
-}
-function recordFail(key) {
-  const f = fails.get(key);
-  if (!f || Date.now() - f.first > WINDOW) fails.set(key, { n: 1, first: Date.now() });
-  else f.n++;
-}
-const clearFails = (key) => fails.delete(key);
-
 function validatePassword(pw) {
   if (typeof pw !== 'string' || pw.length < 8) return 'Password must be at least 8 characters.';
   if (pw.length > 128) return 'Password is too long.';
   return null;
 }
 
-module.exports = { hashPassword, verifyPassword, sha, newToken, throttled, recordFail, clearFails, validatePassword };
+module.exports = { hashPassword, verifyPassword, sha, newToken, validatePassword };

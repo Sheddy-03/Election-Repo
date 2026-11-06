@@ -1,11 +1,9 @@
 'use strict';
 const test = require('node:test');
 const assert = require('node:assert');
-const os = require('node:os');
-const path = require('node:path');
-const fs = require('node:fs');
 
-process.env.DB_PATH = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'portal-')), 't.db');
+delete process.env.DATABASE_URL;
+process.env.PGLITE_DIR = 'memory://';
 process.env.ADMIN_USERNAME = 'boss';
 process.env.ADMIN_PASSWORD = 'AdminPass123';
 
