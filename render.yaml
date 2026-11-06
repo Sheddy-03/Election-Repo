@@ -1,0 +1,16 @@
+# Render Blueprint. Persistent disk requires a paid instance (Starter or higher).
+services:
+  - type: web
+    name: bende-results-portal
+    runtime: docker
+    plan: starter
+    healthCheckPath: /
+    disk:
+      name: portal-data
+      mountPath: /data
+      sizeGB: 1
+    envVars:
+      - key: ADMIN_USERNAME
+        value: admin
+      - key: ADMIN_PASSWORD
+        sync: false   # you will be prompted for this on first deploy
