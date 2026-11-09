@@ -148,9 +148,7 @@ function dashboardView(root) {
       h('div', { class: 'seg', role: 'tablist', 'aria-label': 'Contest' }, CONTESTS.map(([k, l]) => h('button', { role: 'tab', 'aria-selected': String(st.contest === k), onclick: () => { st.contest = k; paint(); } }, l))),
       h('div', { class: 'field sm' }, wardSel),
       h('div', { class: 'spacer' }), live,
-      h('button', { class: 'btn ghost small', onclick: () => exportRanking() }, 'Export ranking (CSV)'),
-      h('button', { class: 'btn ghost small', onclick: () => window.print() }, 'Print / PDF'),
-      h('button', { class: 'btn small', onclick: () => document.body.classList.toggle('present') }, document.body.classList.contains('present') ? 'Exit presentation' : 'Present'));
+      h('button', { class: 'btn ghost small', onclick: () => exportRanking() }, 'Export ranking (CSV)'));
   }
 
   function model() {
@@ -354,7 +352,7 @@ function dashboardView(root) {
       h('div', { class: 'two' }, statusCard, qualCard), h('div', { class: 'two' }, flagCard, regCard));
   }
 
-  // ----- 5. Operations (hidden in presentation mode) -----
+  // ----- 5. Operations -----
   function opsSection() {
     const d = st.data;
     return h('div', { class: 'ops' }, section('Operations', 'Data-entry progress and recent activity.',

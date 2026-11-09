@@ -191,10 +191,7 @@ tr.click { cursor: pointer; } tr.click:hover td { background: var(--brand-soft);
 .sharecell i { display: block; height: 100%; background: var(--bar); }
 tr.current td { background: var(--brand-soft); }
 
-/* presentation + print: hide operational chrome, keep the analysis */
-body.present .topbar, body.present .ops, body.present .tableview { display: none; }
-body.present .filterbar { top: 0; }
-body.present main { max-width: 1400px; }
+/* print (browser Ctrl+P): hide controls, keep the analysis */
 @media print {
   .topbar, .ops, .filterbar button, .filterbar .seg, .tableview, #toast, .viztip, .rank-search { display: none !important; }
   .filterbar { position: static; border: 0; }

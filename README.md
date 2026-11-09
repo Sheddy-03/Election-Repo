@@ -15,7 +15,6 @@ Filters (contest, ward) sit in one bar at the top and drive every section.
 - **All polling units, ranked:** sortable, searchable ranking with rank, share of LGA voters and running total; CSV export.
 - **Results:** party share, results by ward (leader, margin, turnout), top 10 units by votes cast and by turnout, all contests at a glance.
 - **Data quality:** result status, result-sheet quality, results needing review (with the reason) and register checks (units under 100 registered voters).
-- **Present / Print:** presentation mode hides operational panels; print produces a clean PDF.
 Every chart has hover/keyboard tooltips and a "View as table" equivalent. Colours were validated for colour-blind safety in light and dark mode.
 
 ## Workbook import
