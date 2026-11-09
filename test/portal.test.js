@@ -2,8 +2,10 @@
 const test = require('node:test');
 const assert = require('node:assert');
 
-delete process.env.DATABASE_URL;
-process.env.PGLITE_DIR = 'memory://';
+// Default: embedded Postgres (PGlite). Set TEST_DATABASE_URL to run against a real, EMPTY Postgres
+// database through the production `pg` driver (same path as Neon on Vercel).
+if (process.env.TEST_DATABASE_URL) process.env.DATABASE_URL = process.env.TEST_DATABASE_URL;
+else { delete process.env.DATABASE_URL; process.env.PGLITE_DIR = 'memory://'; }
 process.env.ADMIN_USERNAME = 'boss';
 process.env.ADMIN_PASSWORD = 'AdminPass123';
 

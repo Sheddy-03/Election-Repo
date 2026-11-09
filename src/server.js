@@ -25,11 +25,11 @@ function parseCookies(h = '') {
 }
 
 async function readBody(req) {
-  if (req.body !== undefined && req.body !== null) { // already parsed by the serverless runtime
-    if (Buffer.isBuffer(req.body)) req = { _raw: req.body };
-    else if (typeof req.body === 'string') req = { _raw: Buffer.from(req.body) };
-    else return req.body;
-    return req._raw.length ? JSON.parse(req._raw.toString('utf8')) : {};
+  if (req.body !== undefined && req.body !== null) { // already read by the serverless runtime (Vercel)
+    if (typeof req.body === 'object' && !Buffer.isBuffer(req.body)) return req.body;
+    const raw = Buffer.isBuffer(req.body) ? req.body.toString('utf8') : String(req.body);
+    if (!raw.trim()) return {};
+    try { return JSON.parse(raw); } catch { throw new HttpError(400, 'Invalid JSON.'); }
   }
   return new Promise((resolve, reject) => {
     let size = 0; const chunks = [];
@@ -170,7 +170,9 @@ async function api(req, res, url) {
     if (!(req.headers['content-type'] || '').startsWith('application/json') && m !== 'DELETE') throw new HttpError(415, 'JSON required.');
     const origin = req.headers.origin;
     if (origin && new URL(origin).host !== req.headers.host) throw new HttpError(403, 'Cross-origin request blocked.');
-    body = await readBody(req);
+    // DELETE takes its parameters from the query string; never wait on a body that may not exist
+    // (on serverless runtimes the request stream can already be consumed).
+    if (m !== 'DELETE') body = await readBody(req);
   }
 
   // ----- public / session -----
