@@ -2,8 +2,10 @@
 const test = require('node:test');
 const assert = require('node:assert');
 
-delete process.env.DATABASE_URL;
-process.env.PGLITE_DIR = 'memory://';
+// Default: embedded Postgres (PGlite). Set TEST_DATABASE_URL to run against a real, EMPTY Postgres
+// database through the production `pg` driver (same path as Neon on Vercel).
+if (process.env.TEST_DATABASE_URL) process.env.DATABASE_URL = process.env.TEST_DATABASE_URL;
+else { delete process.env.DATABASE_URL; process.env.PGLITE_DIR = 'memory://'; }
 process.env.ADMIN_USERNAME = 'boss';
 process.env.ADMIN_PASSWORD = 'AdminPass123';
 
@@ -118,4 +120,48 @@ test('cross-origin writes are blocked and logins throttle', async () => {
   let last;
   for (let i = 0; i < 9; i++) last = await call('POST', '/api/login', { username: 'nobody', password: 'x' });
   assert.equal(last.status, 429);
+});
+
+test('workbook import, sheet quality and analyst dashboard data', async () => {
+  const admin = await login('boss', 'AdminPass123');
+  // quality must come from the fixed list
+  const agent = await call('POST', '/api/admin/users', { username: 'qagent', full_name: 'Q Agent', password: 'TempPass333', pu_codes: ['01-04-13-009'] }, admin);
+  assert.equal(agent.status, 201);
+  const qa = await login('qagent', 'TempPass333');
+  await call('POST', '/api/me/password', { current: 'TempPass333', next: 'QAgentPass1' }, qa);
+  assert.equal((await call('PUT', '/api/my/units/01-04-13-009/senate', { quality: 'Looks fine' }, qa)).status, 400);
+  assert.equal((await call('PUT', '/api/my/units/01-04-13-009/senate', { pdp: 5, quality: 'Clear & stamped' }, qa)).status, 200);
+
+  // preview, then import without overwrite: existing entries are kept
+  const pre = (await call('GET', '/api/admin/import/workbook', null, admin)).json;
+  assert.equal(pre.contests.presidential.rows, 211);
+  assert.ok(pre.contests.senate.overlap >= 1);
+  const imp = await call('POST', '/api/admin/import/workbook', { overwrite: false }, admin);
+  assert.equal(imp.status, 200);
+  assert.equal(imp.json.result.senate.written + imp.json.result.senate.skipped, pre.contests.senate.rows);
+  const kept = (await call('GET', '/api/admin/results/senate/01-04-13-009', null, admin)).json.result;
+  assert.equal(kept.pdp, 5, 'agent entry must survive a non-overwrite import');
+  assert.equal(kept.quality, 'Clear & stamped');
+
+  // a row that was all zeros in the workbook is imported as blank (Missing), not as a 0-vote result
+  const zero = (await call('GET', '/api/admin/results/presidential/01-04-01-004', null, admin)).json.result;
+  assert.equal(zero.status, 'Missing');
+  assert.ok(zero.notes.includes('imported as blank'));
+  // a normal row keeps its figures and gets a mapped sheet quality
+  const ok = (await call('GET', '/api/admin/results/presidential/01-04-01-002', null, admin)).json.result;
+  assert.deepEqual([ok.pdp, ok.apc, ok.lp, ok.accredited, ok.valid, ok.rejected], [0, 11, 38, 58, 50, 8]);
+  assert.equal(ok.quality, 'Clear');
+
+  // analyst dashboard payload
+  const d = (await call('GET', '/api/admin/dashboard', null, admin)).json;
+  assert.equal(d.units.length, 214);
+  assert.deepEqual(d.lgas, ['Bende']);
+  const top = [...d.units].sort((a, b) => b.registered - a.registered)[0];
+  assert.equal(top.code, '01-04-02-001');
+  assert.equal(top.registered, 1290);
+  assert.ok(d.units.find((u) => u.code === '01-04-01-002').results.presidential.status);
+  assert.ok(d.contests.find((c) => c.key === 'presidential').complete > 100);
+
+  // agents cannot import
+  assert.equal((await call('POST', '/api/admin/import/workbook', {}, qa)).status, 403);
 });

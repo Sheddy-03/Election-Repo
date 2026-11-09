@@ -4,7 +4,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { query, tx, ready, NOW } = require('./db');
 const A = require('./auth');
-const { CONTESTS, parseInput, decorate } = require('./results');
+const { CONTESTS, FIELDS, QUALITY, parseInput, decorate } = require('./results');
 const { buildDashboard, loadAll } = require('./dashboard');
 
 const PORT = Number(process.env.PORT || 3000);
@@ -25,11 +25,11 @@ function parseCookies(h = '') {
 }
 
 async function readBody(req) {
-  if (req.body !== undefined && req.body !== null) { // already parsed by the serverless runtime
-    if (Buffer.isBuffer(req.body)) req = { _raw: req.body };
-    else if (typeof req.body === 'string') req = { _raw: Buffer.from(req.body) };
-    else return req.body;
-    return req._raw.length ? JSON.parse(req._raw.toString('utf8')) : {};
+  if (req.body !== undefined && req.body !== null) { // already read by the serverless runtime (Vercel)
+    if (typeof req.body === 'object' && !Buffer.isBuffer(req.body)) return req.body;
+    const raw = Buffer.isBuffer(req.body) ? req.body.toString('utf8') : String(req.body);
+    if (!raw.trim()) return {};
+    try { return JSON.parse(raw); } catch { throw new HttpError(400, 'Invalid JSON.'); }
   }
   return new Promise((resolve, reject) => {
     let size = 0; const chunks = [];
@@ -107,26 +107,52 @@ async function puWithResults(code) {
       registered: pu.registered,
       pdp: r.pdp ?? null, apc: r.apc ?? null, lp: r.lp ?? null,
       accredited: r.accredited ?? null, valid: r.valid ?? null, rejected: r.rejected ?? null,
-      notes: r.notes ?? '', updated_at: r.updated_at ?? null,
+      notes: r.notes ?? '', quality: r.quality ?? null, updated_at: r.updated_at ?? null,
     });
   }
   return { pu, contests };
+}
+
+const upsertResult = (q, contest, code, v, notes, quality, userId) => q(
+  `INSERT INTO results (contest,pu_code,pdp,apc,lp,accredited,valid,rejected,notes,quality,entered_by,updated_at)
+   VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,${NOW})
+   ON CONFLICT (contest,pu_code) DO UPDATE SET pdp=EXCLUDED.pdp, apc=EXCLUDED.apc, lp=EXCLUDED.lp,
+     accredited=EXCLUDED.accredited, valid=EXCLUDED.valid, rejected=EXCLUDED.rejected, notes=EXCLUDED.notes,
+     quality=EXCLUDED.quality, entered_by=EXCLUDED.entered_by, updated_at=EXCLUDED.updated_at`,
+  [contest, code, v.pdp, v.apc, v.lp, v.accredited, v.valid, v.rejected, notes, quality, userId]);
+
+// ---------- workbook import ----------
+const WORKBOOK_FILE = path.join(__dirname, '..', 'data', 'workbook_results.json');
+const loadWorkbook = () => JSON.parse(fs.readFileSync(WORKBOOK_FILE, 'utf8'));
+
+async function workbookPlan() {
+  const wb = loadWorkbook();
+  const existing = await query(`SELECT contest, pu_code FROM results
+    WHERE pdp IS NOT NULL OR apc IS NOT NULL OR lp IS NOT NULL OR accredited IS NOT NULL OR valid IS NOT NULL OR rejected IS NOT NULL OR notes <> ''`);
+  const has = new Set(existing.map((r) => `${r.contest}|${r.pu_code}`));
+  const codes = new Set((await query('SELECT code FROM polling_units')).map((r) => r.code));
+  const plan = {};
+  for (const [contest, rows] of Object.entries(wb.contests)) {
+    const valid = rows.filter((r) => codes.has(r.code));
+    plan[contest] = {
+      rows: valid,
+      unknown: rows.length - valid.length,
+      fill: valid.filter((r) => !has.has(`${contest}|${r.code}`)).length,
+      overlap: valid.filter((r) => has.has(`${contest}|${r.code}`)).length,
+    };
+  }
+  return { source: wb.source, generated: wb.generated, plan };
 }
 
 async function saveResult(user, contest, code, body, { asAdmin }) {
   const pu = first(await query('SELECT * FROM polling_units WHERE code = $1', [code]));
   if (!pu) throw new HttpError(404, 'Polling unit not found.');
   if (!asAdmin && pu.agent_id !== user.id) throw new HttpError(403, 'This polling unit is not assigned to you.');
-  const { values, notes, error } = parseInput(body);
+  const { values, notes, quality, error } = parseInput(body);
   if (error) throw new HttpError(400, error);
   const row = decorate({ registered: pu.registered, ...values, notes });
   await tx(async (q) => {
-    await q(`INSERT INTO results (contest,pu_code,pdp,apc,lp,accredited,valid,rejected,notes,entered_by,updated_at)
-             VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,${NOW})
-             ON CONFLICT (contest,pu_code) DO UPDATE SET pdp=EXCLUDED.pdp, apc=EXCLUDED.apc, lp=EXCLUDED.lp,
-               accredited=EXCLUDED.accredited, valid=EXCLUDED.valid, rejected=EXCLUDED.rejected, notes=EXCLUDED.notes,
-               entered_by=EXCLUDED.entered_by, updated_at=EXCLUDED.updated_at`,
-    [contest, code, values.pdp, values.apc, values.lp, values.accredited, values.valid, values.rejected, notes, user.id]);
+    await upsertResult(q, contest, code, values, notes, quality, user.id);
     await audit(q, user, 'result.save', { contest, pu: code, detail: `${row.status}: PDP ${values.pdp ?? '-'} APC ${values.apc ?? '-'} LP ${values.lp ?? '-'} | acc ${values.accredited ?? '-'} valid ${values.valid ?? '-'} rej ${values.rejected ?? '-'}${asAdmin ? ' (admin)' : ''}` });
   });
   return { status: row.status, total: row.total, turnout: row.turnout };
@@ -144,7 +170,9 @@ async function api(req, res, url) {
     if (!(req.headers['content-type'] || '').startsWith('application/json') && m !== 'DELETE') throw new HttpError(415, 'JSON required.');
     const origin = req.headers.origin;
     if (origin && new URL(origin).host !== req.headers.host) throw new HttpError(403, 'Cross-origin request blocked.');
-    body = await readBody(req);
+    // DELETE takes its parameters from the query string; never wait on a body that may not exist
+    // (on serverless runtimes the request stream can already be consumed).
+    if (m !== 'DELETE') body = await readBody(req);
   }
 
   // ----- public / session -----
@@ -177,6 +205,7 @@ async function api(req, res, url) {
     return send(res, 200, { ok: true }, { 'Set-Cookie': 'sid=; HttpOnly; SameSite=Strict; Path=/; Max-Age=0' });
   }
   if (p === '/api/me' && m === 'GET') { needAuth(user); return send(res, 200, publicUser(user)); }
+  if (p === '/api/meta' && m === 'GET') { needAuth(user); return send(res, 200, { qualities: QUALITY, contests: CONTESTS }); }
   if (p === '/api/me/password' && m === 'POST') {
     needAuth(user);
     const row = first(await query('SELECT password_hash FROM users WHERE id = $1', [user.id]));
@@ -290,6 +319,33 @@ async function api(req, res, url) {
       }
     }
 
+    if (parts[1] === 'import' && parts[2] === 'workbook') {
+      const { source, generated, plan } = await workbookPlan();
+      const summary = Object.fromEntries(Object.entries(plan).map(([k, v]) => [k, { rows: v.rows.length, fill: v.fill, overlap: v.overlap, unknown: v.unknown }]));
+      if (m === 'GET') return send(res, 200, { source, generated, contests: summary });
+      if (m === 'POST') {
+        const overwrite = body.overwrite === true;
+        const done = await tx(async (q) => {
+          const has = new Set((await q(`SELECT contest, pu_code FROM results
+            WHERE pdp IS NOT NULL OR apc IS NOT NULL OR lp IS NOT NULL OR accredited IS NOT NULL OR valid IS NOT NULL OR rejected IS NOT NULL OR notes <> ''`)).map((r) => `${r.contest}|${r.pu_code}`));
+          const out = {};
+          for (const [contest, p] of Object.entries(plan)) {
+            let written = 0, skipped = 0;
+            for (const r of p.rows) {
+              if (!overwrite && has.has(`${contest}|${r.code}`)) { skipped++; continue; }
+              const v = Object.fromEntries(FIELDS.map((f) => [f, r[f] ?? null]));
+              await upsertResult(q, contest, r.code, v, String(r.notes || '').slice(0, 500), QUALITY.includes(r.quality) ? r.quality : null, user.id);
+              written++;
+            }
+            out[contest] = { written, skipped };
+            await audit(q, user, 'import', { contest, detail: `${source}: ${written} written, ${skipped} kept (already entered)${overwrite ? ', overwrite on' : ''}` });
+          }
+          return out;
+        });
+        return send(res, 200, { ok: true, result: done });
+      }
+    }
+
     if (parts[1] === 'units' && m === 'GET') {
       const ward = url.searchParams.get('ward');
       const rows = await query(`SELECT p.code, p.ward, p.name, p.registered, p.reg_class, p.group80, p.agent_id, u.full_name AS agent_name
@@ -307,8 +363,8 @@ async function api(req, res, url) {
 
     if (parts[1] === 'export' && m === 'GET') {
       const key = contestOr404(String(parts[2] || '').replace(/\.csv$/, ''));
-      const head = ['Ward', 'PU code', 'Polling unit', '2023 registered', 'PDP', 'APC', 'LP', 'Accredited', 'Valid', 'Rejected', 'Total Votes', 'Turnout', 'Status', 'Source / notes', 'Reg. Class', '80% Group', 'Assigned agent'];
-      const rows = (await loadAll())[key].map((r) => [r.ward, r.code, r.name, r.registered, r.pdp, r.apc, r.lp, r.accredited, r.valid, r.rejected, r.total, r.turnout === null ? '' : r.turnout.toFixed(4), r.status, r.notes, r.reg_class, r.group80, r.agent_name || ''].map(csvCell).join(','));
+      const head = ['Ward', 'PU code', 'Polling unit', '2023 registered', 'PDP', 'APC', 'LP', 'Accredited', 'Valid', 'Rejected', 'Total Votes', 'Turnout', 'Status', 'Sheet quality', 'Source / notes', 'Reg. Class', '80% Group', 'Assigned agent'];
+      const rows = (await loadAll())[key].map((r) => [r.ward, r.code, r.name, r.registered, r.pdp, r.apc, r.lp, r.accredited, r.valid, r.rejected, r.total, r.turnout === null ? '' : r.turnout.toFixed(4), r.status, r.quality || '', r.notes, r.reg_class, r.group80, r.agent_name || ''].map(csvCell).join(','));
       await audit(query, user, 'export', { contest: key });
       return send(res, 200, '﻿' + [head.join(','), ...rows].join('\r\n'), { 'Content-Type': 'text/csv; charset=utf-8', 'Content-Disposition': `attachment; filename="bende-${key}-results.csv"` });
     }

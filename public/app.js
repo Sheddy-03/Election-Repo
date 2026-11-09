@@ -64,9 +64,12 @@ const logoSvg = () => { const s = document.createElementNS('http://www.w3.org/20
 // ---------- session ----------
 let me = null;
 let booted = false;
+let QUALITY = [];
+async function loadMeta() { try { QUALITY = (await api('GET', '/api/meta')).qualities; } catch { /* not signed in yet */ } }
 
 async function boot() {
   try { me = await api('GET', '/api/me'); } catch { me = null; }
+  if (me && !me.must_change_password) await loadMeta();
   booted = true; render();
 }
 
@@ -89,7 +92,7 @@ function loginView() {
   const form = h('form', {
     onsubmit: async (e) => {
       e.preventDefault(); btn.disabled = true; err.hidden = true;
-      try { me = await api('POST', '/api/login', { username: u.value, password: p.value }); render(); }
+      try { me = await api('POST', '/api/login', { username: u.value, password: p.value }); if (!me.must_change_password) await loadMeta(); render(); }
       catch (ex) { err.textContent = ex.message; err.hidden = false; btn.disabled = false; p.value = ''; p.focus(); }
     },
   }, h('div', { class: 'field' }, h('label', { for: 'u' }, 'Username'), u), h('div', { class: 'field', style: 'margin-top:12px' }, h('label', { for: 'p' }, 'Password'), p), err,
@@ -107,7 +110,7 @@ function changePasswordView(forced) {
     onsubmit: async (e) => {
       e.preventDefault(); err.hidden = true;
       if (n1.value !== n2.value) { err.textContent = 'New passwords do not match.'; err.hidden = false; return; }
-      try { await api('POST', '/api/me/password', { current: cur.value, next: n1.value }); me.must_change_password = false; toast('Password updated.'); forced ? render() : box.close(); }
+      try { await api('POST', '/api/me/password', { current: cur.value, next: n1.value }); me.must_change_password = false; toast('Password updated.'); if (forced) { await loadMeta(); render(); } else box.close(); }
       catch (ex) { err.textContent = ex.message; err.hidden = false; }
     },
   }, h('div', { class: 'field' }, h('label', forced ? 'Temporary password' : 'Current password'), cur),
@@ -168,7 +171,9 @@ function entryForm({ registered, data, onSave, canClear }) {
   const inputs = {};
   const calc = h('div', { class: 'calc' });
   const issues = h('div');
-  const notes = h('textarea', { rows: 2, maxlength: 500, placeholder: 'Optional — record any exception (e.g. result sheet damaged, figures unclear)' }, data.notes || '');
+  const quality = h('select', { id: 'f-quality' }, h('option', { value: '' }, '— Select sheet quality —'), QUALITY.map((q) => h('option', { value: q }, q)));
+  quality.value = data.quality || '';
+  const notes = h('textarea', { rows: 2, maxlength: 500, placeholder: 'Optional — anything else worth recording about this result sheet' }, data.notes || '');
   const read = () => Object.fromEntries(FIELDS.map(([f]) => { const raw = inputs[f].value.trim(); return [f, raw === '' ? null : Number(raw)]; }));
   const valid = (v) => Object.values(v).every((x) => x === null || (Number.isInteger(x) && x >= 0));
   function refresh() {
@@ -190,12 +195,12 @@ function entryForm({ registered, data, onSave, canClear }) {
   }));
   const save = h('button', { class: 'btn', type: 'button', onclick: async () => {
     save.disabled = true;
-    try { await onSave({ ...read(), notes: notes.value }); } catch (e) { toast(e.message, true); } finally { save.disabled = false; refresh(); }
+    try { await onSave({ ...read(), quality: quality.value || null, notes: notes.value }); } catch (e) { toast(e.message, true); } finally { save.disabled = false; refresh(); }
   } }, 'Save result');
   const root = h('div', grid, calc, issues,
-    h('div', { class: 'field' }, h('label', 'Source / notes'), notes),
+    h('div', { class: 'row' }, h('div', { class: 'field', style: 'min-width:220px' }, h('label', { for: 'f-quality' }, 'Result sheet quality'), quality), h('div', { class: 'field', style: 'flex:2;min-width:220px' }, h('label', 'Notes (optional)'), notes)),
     h('p', { class: 'muted small' }, 'Enter figures exactly as written on the result sheet. Type 0 for a confirmed zero; leave a box empty only if the figure is unknown. A result counts as Complete once all six figures pass the checks.'),
-    h('div', { class: 'row' }, save, canClear && h('button', { class: 'btn ghost', type: 'button', onclick: () => { for (const f of Object.keys(inputs)) inputs[f].value = ''; notes.value = ''; refresh(); } }, 'Clear fields')));
+    h('div', { class: 'row' }, save, canClear && h('button', { class: 'btn ghost', type: 'button', onclick: () => { for (const f of Object.keys(inputs)) inputs[f].value = ''; notes.value = ''; quality.value = ''; refresh(); } }, 'Clear fields')));
   refresh();
   return root;
 }
@@ -247,71 +252,7 @@ function openUnit(u, refresh) {
 }
 
 // ---------- admin: dashboard ----------
-function dashboardView(root) {
-  let ward = '';
-  const body = h('div');
-  const sel = h('select', { onchange: () => { ward = sel.value; load(); } }, h('option', { value: '' }, 'All wards'));
-  const live = h('span', { class: 'muted small' });
-  root.append(h('div', { class: 'head' }, h('h2', 'Election dashboard'), h('div', { class: 'spacer' }), live,
-    h('div', { class: 'field sm' }, sel), CONTESTS.map(([k, l]) => h('a', { class: 'btn ghost small', href: `/api/admin/export/${k}.csv` }, 'CSV · ' + l.replace('House of ', '')))), body);
-
-  async function load() {
-    const [d, act] = await Promise.all([api('GET', '/api/admin/dashboard' + (ward ? '?ward=' + encodeURIComponent(ward) : '')), api('GET', '/api/admin/activity?limit=12')]);
-    if (sel.options.length === 1) d.wards.forEach((w) => sel.append(h('option', { value: w }, w)));
-    sel.value = d.ward || '';
-    live.textContent = 'Live · updated ' + new Date().toLocaleTimeString();
-    const T = d.totals;
-    const tile = (k, v, s) => h('div', { class: 'tile' }, h('div', { class: 'k' }, k), h('div', { class: 'v' }, v), s && h('div', { class: 's' }, s));
-    const partyBar = (c) => {
-      const t = c.pdp + c.apc + c.lp;
-      return h('div', c.complete ? [h('div', { class: 'partybar' }, [['pdp', c.pdp], ['apc', c.apc], ['lp', c.lp]].map(([p, v]) => h('span', { style: `width:${t ? (v / t) * 100 : 0}%;background:var(--${p})`, title: `${p.toUpperCase()} ${fmt(v)}` })))] : h('div', { class: 'partybar' }));
-    };
-    body.replaceChildren(...[
-      h('div', { class: 'grid tiles' },
-        tile('Registered voters', fmt(T.registered), `${T.pus} polling units`),
-        tile('Units assigned', `${T.assigned} / ${T.pus}`, T.unassigned ? `${T.unassigned} still unassigned` : 'All units covered'),
-        tile('Active agents', fmt(T.agents)),
-        tile('Presidential coverage', pct(d.contests[0].coverage), `${d.contests[0].complete} of ${d.contests[0].expected} units`),
-        tile('Flagged for review', fmt(d.flaggedCount), 'Check-figures results')),
-      h('div', { class: 'card' }, h('h2', 'Contest summary' + (d.ward ? ' · ' + d.ward : ' · all wards')),
-        h('div', { class: 'tablewrap' }, h('table', h('thead', h('tr', ['Contest', 'Expected PUs', 'Complete', 'Coverage', 'PDP', 'APC', 'LP', 'PDP avg/PU', 'APC avg/PU', 'LP avg/PU', 'Total votes', 'Accredited', 'Avg PU turnout'].map((x, i) => h('th', { class: i ? 'num' : '' }, x)))),
-          h('tbody', d.contests.map((c) => h('tr', h('td', h('b', c.label)), [c.expected, c.complete].map((x) => h('td', { class: 'num' }, fmt(x))),
-            h('td', { class: 'num' }, h('div', { class: 'bar ok' }, h('i', { style: `width:${c.coverage * 100}%` })), h('span', { class: 'small' }, pct(c.coverage))),
-            [c.pdp, c.apc, c.lp].map((x) => h('td', { class: 'num' }, c.complete ? fmt(x) : '—')),
-            [c.pdpAvg, c.apcAvg, c.lpAvg].map((x) => h('td', { class: 'num' }, fmt1(x))),
-            h('td', { class: 'num' }, c.complete ? fmt(c.totalVotes) : '—'), h('td', { class: 'num' }, c.complete ? fmt(c.accredited) : '—'), h('td', { class: 'num' }, pct(c.avgTurnout)))))),
-        ), h('div', { class: 'two', style: 'margin-top:14px' }, d.contests.map((c) => h('div', h('div', { class: 'small' }, h('b', c.label), h('span', { class: 'muted' }, ` · ${c.incomplete} incomplete · ${c.check} to check · ${c.missing} missing`)), partyBar(c)))),
-        h('div', { class: 'legend' }, [['pdp', 'PDP'], ['apc', 'APC'], ['lp', 'LP']].map(([p, l]) => h('span', h('i', { style: `background:var(--${p})` }), l))),
-        h('p', { class: 'muted small', style: 'margin-bottom:0' }, 'Totals and averages use Complete results only (all six figures present and passing the checks). Turnout = (valid + rejected) ÷ registered.')),
-
-      h('div', { class: 'two' },
-        h('div', { class: 'card' }, h('h2', 'Progress by ward'), h('div', { class: 'tablewrap scroll' }, h('table', h('thead', h('tr', ['Ward', 'Registered', 'PUs', 'Assigned', 'Pres.', 'Sen.', 'House'].map((x, i) => h('th', { class: i ? 'num' : '' }, x)))),
-          h('tbody', d.wardTable.map((w) => h('tr', { class: 'click', onclick: () => { ward = w.ward; load(); } }, h('td', w.ward), h('td', { class: 'num' }, fmt(w.registered)), h('td', { class: 'num' }, w.pus), h('td', { class: 'num' }, `${w.assigned}/${w.pus}`),
-            ['presidential', 'senate', 'reps'].map((k) => h('td', { class: 'num' }, `${w[k]}/${w.pus}`))))))),
-          h('p', { class: 'muted small' }, 'Click a ward to filter the dashboard.')),
-        h('div', { class: 'card' }, h('h2', 'Agent progress'), d.agents.length ? h('div', { class: 'tablewrap scroll' }, h('table', h('thead', h('tr', ['Agent', 'Units', 'Pres.', 'Sen.', 'House', 'Flags', 'Last entry'].map((x, i) => h('th', { class: i && i < 6 ? 'num' : '' }, x)))),
-          h('tbody', d.agents.map((a) => h('tr', h('td', a.full_name, !a.active && h('span', { class: 'chip idle', style: 'margin-left:6px' }, 'inactive')), h('td', { class: 'num' }, a.assigned),
-            ['presidential', 'senate', 'reps'].map((k) => h('td', { class: 'num' }, `${a.progress[k]}/${a.assigned}`)), h('td', { class: 'num' }, a.flagged ? h('span', { class: 'chip bad' }, a.flagged) : '0'), h('td', { class: 'small muted nowrap' }, ts(a.last_entry) || '—')))))) : h('p', { class: 'muted' }, 'No data entry agents yet. Create them under Agents & assignments.')),
-      ),
-
-      h('div', { class: 'two' },
-        h('div', { class: 'card' }, h('h2', 'Registration profile' + (d.ward ? ' · ' + d.ward : '')), h('div', { class: 'tablewrap' }, h('table', h('thead', h('tr', ['Class', 'PUs', 'Registered', 'Share', '80Grp', '20grp'].map((x, i) => h('th', { class: i ? 'num' : '' }, x)))),
-          h('tbody', d.profile.classes.map((c) => { const tot = d.profile.classes.reduce((a, b) => a + b.registered, 0); return h('tr', h('td', c.cls), h('td', { class: 'num' }, c.pus), h('td', { class: 'num' }, fmt(c.registered)), h('td', { class: 'num' }, pct(tot ? c.registered / tot : null)), h('td', { class: 'num' }, c.g80), h('td', { class: 'num' }, c.g20)); }),
-            d.profile.groups.map((g) => h('tr', h('td', h('b', g.group)), h('td', { class: 'num' }, g.pus), h('td', { class: 'num' }, fmt(g.registered)), h('td'), h('td'), h('td')))))),
-          h('p', { class: 'muted small', style: 'margin-bottom:0' }, 'A ≥ 769 · B 525–768 · C 280–524 · D 0–279 registered voters per polling unit. 80Grp = the largest units needed to reach 80% of the register.')),
-        h('div', { class: 'card' }, h('h2', 'Results by registration group'), h('div', { class: 'tablewrap' }, h('table', h('thead', h('tr', ['Contest', 'Group', 'Complete', 'Coverage', 'PDP', 'APC', 'LP', 'Turnout'].map((x, i) => h('th', { class: i > 1 ? 'num' : '' }, x)))),
-          h('tbody', d.byGroup.map((g) => h('tr', h('td', g.contest), h('td', g.group), h('td', { class: 'num' }, `${g.complete}/${g.expected}`), h('td', { class: 'num' }, pct(g.coverage, 0)),
-            [g.pdp, g.apc, g.lp].map((x) => h('td', { class: 'num' }, g.complete ? fmt(x) : '—')), h('td', { class: 'num' }, pct(g.turnout)))))))),
-      ),
-
-      d.flaggedCount ? h('div', { class: 'card' }, h('h2', `Results needing review (${d.flaggedCount})`), h('div', { class: 'tablewrap scroll' }, h('table', h('thead', h('tr', ['Contest', 'PU code', 'Polling unit', 'Ward'].map((x) => h('th', x)))),
-        h('tbody', d.flagged.map((f) => h('tr', { class: 'click', onclick: () => adminEdit(f.contest, f.code, load) }, h('td', f.contestLabel), h('td', f.code), h('td', f.name), h('td', f.ward)))))), h('p', { class: 'muted small', style: 'margin-bottom:0' }, 'Click a row to review and correct the figures.')) : null,
-
-      h('div', { class: 'card' }, h('h2', 'Latest activity'), activityTable(act.activity))].filter(Boolean));
-  }
-  load().catch((e) => toast(e.message, true));
-  timers.push(setInterval(() => load().catch(() => {}), 15000));
-}
+// dashboardView() lives in /dashboard.js (analyst dashboard).
 
 function activityTable(rows) {
   if (!rows.length) return h('p', { class: 'muted' }, 'Nothing recorded yet.');
@@ -444,7 +385,7 @@ function resultsView(root) {
   const search = h('input', { type: 'search', placeholder: 'Search code or name…' });
   const seg = h('div', { class: 'seg' });
   let rows = [];
-  root.append(h('div', { class: 'head' }, h('h2', 'Results by polling unit'), h('div', { class: 'spacer' }), h('a', { class: 'btn ghost small', id: 'exp', href: '#' }, 'Export CSV')),
+  root.append(h('div', { class: 'head' }, h('h2', 'Results by polling unit'), h('div', { class: 'spacer' }), h('button', { class: 'btn ghost small', onclick: () => importDialog(load) }, 'Import workbook results'), h('a', { class: 'btn ghost small', id: 'exp', href: '#' }, 'Export CSV')),
     h('div', { class: 'card' }, seg, h('div', { class: 'row' }, h('div', { class: 'field' }, h('label', 'Ward'), wardSel), h('div', { class: 'field' }, h('label', 'Status'), stSel), h('div', { class: 'field' }, h('label', 'Search'), search)), h('div', { style: 'margin-top:12px' }, body)));
   const exp = root.querySelector('#exp');
   function paint() {
@@ -453,14 +394,36 @@ function resultsView(root) {
     const q = search.value.trim().toLowerCase();
     const vis = rows.filter((r) => (!wardSel.value || r.ward === wardSel.value) && (!stSel.value || r.status === stSel.value) && (!q || `${r.code} ${r.name}`.toLowerCase().includes(q)));
     body.replaceChildren(h('p', { class: 'muted small' }, `${vis.length} units shown. Click a row to view or correct a result.`), h('div', { class: 'tablewrap scroll', style: 'max-height:640px' }, h('table',
-      h('thead', h('tr', ['PU code', 'Polling unit', 'Reg.', 'PDP', 'APC', 'LP', 'Accr.', 'Valid', 'Rej.', 'Total', 'Turnout', 'Status', 'Agent'].map((x, i) => h('th', { class: i > 1 && i < 11 ? 'num' : '' }, x)))),
+      h('thead', h('tr', ['PU code', 'Polling unit', 'Reg.', 'PDP', 'APC', 'LP', 'Accr.', 'Valid', 'Rej.', 'Total', 'Turnout', 'Status', 'Sheet', 'Agent'].map((x, i) => h('th', { class: i > 1 && i < 11 ? 'num' : '' }, x)))),
       h('tbody', vis.map((r) => h('tr', { class: 'click', onclick: () => adminEdit(contest, r.code, load) }, h('td', r.code), h('td', r.name), h('td', { class: 'num' }, fmt(r.registered)),
-        ['pdp', 'apc', 'lp', 'accredited', 'valid', 'rejected', 'total'].map((f) => h('td', { class: 'num' }, r[f] ?? '')), h('td', { class: 'num' }, pct(r.turnout)), h('td', chip(r.status)), h('td', { class: 'small' }, r.agent_name || '—')))))));
+        ['pdp', 'apc', 'lp', 'accredited', 'valid', 'rejected', 'total'].map((f) => h('td', { class: 'num' }, r[f] ?? '')), h('td', { class: 'num' }, pct(r.turnout)), h('td', chip(r.status)), h('td', { class: 'small muted' }, r.quality || ''), h('td', { class: 'small' }, r.agent_name || '—')))))));
   }
   async function load() { rows = (await api('GET', `/api/admin/results/${contest}`)).results; if (wardSel.options.length === 1) [...new Set(rows.map((r) => r.ward))].forEach((w) => wardSel.append(h('option', { value: w }, w))); paint(); }
   wardSel.onchange = stSel.onchange = paint; search.oninput = paint;
   load().catch((e) => toast(e.message, true));
   timers.push(setInterval(() => { if (!document.querySelector('.overlay')) load().catch(() => {}); }, 20000));
+}
+
+async function importDialog(reload) {
+  try {
+    const p = await api('GET', '/api/admin/import/workbook');
+    const overwrite = h('input', { type: 'checkbox', id: 'imp-ow', style: 'width:auto;min-height:0' });
+    const go = h('button', { class: 'btn', onclick: async () => {
+      if (overwrite.checked && !confirm('Overwrite results that are already in the portal with the workbook figures? This cannot be undone (the activity log keeps a record).')) return;
+      go.disabled = true;
+      try {
+        const r = await api('POST', '/api/admin/import/workbook', { overwrite: overwrite.checked });
+        toast('Imported: ' + CONTESTS.map(([k, l]) => `${l} ${r.result[k].written}`).join(' · '));
+        box.close(); reload && reload();
+      } catch (e) { toast(e.message, true); go.disabled = false; }
+    } }, 'Import results');
+    const box = modal('Import workbook results', h('div',
+      h('p', { class: 'muted small' }, `Source: ${p.source} (prepared ${p.generated}). Total, turnout and status are recalculated by the portal. Rows where every figure was 0 (unreadable sheets) are imported as blank. Workbook notes become the sheet-quality value.`),
+      h('div', { class: 'tablewrap' }, h('table', h('thead', h('tr', ['Contest', 'Rows in workbook', 'New (empty in portal)', 'Already entered in portal'].map((x, i) => h('th', { class: i ? 'num' : '' }, x)))),
+        h('tbody', CONTESTS.map(([k, l]) => h('tr', h('td', l), h('td', { class: 'num' }, p.contests[k].rows), h('td', { class: 'num' }, p.contests[k].fill), h('td', { class: 'num' }, p.contests[k].overlap)))))),
+      h('label', { style: 'display:flex;gap:8px;align-items:center;margin:14px 0;font-weight:500' }, overwrite, 'Also overwrite results already entered in the portal (default: keep them)'),
+      h('div', { class: 'row' }, go)));
+  } catch (e) { toast(e.message, true); }
 }
 
 async function adminEdit(contest, code, reload) {

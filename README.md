@@ -8,6 +8,22 @@ Results-entry portal built from `Bende_2023_Election_Results.xlsx` (214 polling 
 
 **One polling unit = one agent.** Enforced in the database (a PU has a single `agent_id`) and in the API (assignment to a second agent is refused with the owner named; unit must be unassigned first).
 
+## Admin dashboard (analyst view)
+Filters (contest, ward) sit in one bar at the top and drive every section.
+- **Headline figures:** registered voters, polling units, average/median per unit, largest unit, results coverage, flagged results.
+- **Where the voters are:** top 15 polling units by registered voters (with ward, LGA and % of all LGA voters), a concentration curve (how many units hold 50% / 80% of voters), size-class mix (A–D) and voters by ward.
+- **All polling units, ranked:** sortable, searchable ranking with rank, share of LGA voters and running total; CSV export.
+- **Results:** party share, results by ward (leader, margin, turnout), top 10 units by votes cast and by turnout, all contests at a glance.
+- **Data quality:** result status, result-sheet quality, results needing review (with the reason) and register checks (units under 100 registered voters).
+- **Present / Print:** presentation mode hides operational panels; print produces a clean PDF.
+Every chart has hover/keyboard tooltips and a "View as table" equivalent. Colours were validated for colour-blind safety in light and dark mode.
+
+## Workbook import
+`data/workbook_results.json` holds the results from `Bende_2023_Election_Results_1.xlsx`. Admins import it from **Results → Import workbook results** (keeps anything already entered unless "overwrite" is ticked). Rules: Total/Turnout/Status are recalculated; rows where all six figures were 0 are imported as blank; free-text notes are mapped to the fixed sheet-quality list and kept as notes. To regenerate from a newer workbook:
+```bash
+python3 tools/workbook_to_json.py path/to/workbook.xlsx
+```
+
 ## Business rules (from the workbook)
 Total = Valid + Rejected; Turnout = Total ÷ Registered. Status: `Missing` (no figures) → `Incomplete` (<6 figures) → `Check figures` (party sum > valid, total > accredited, accredited > registered, or invalid numbers) → `Complete`. Dashboard totals use Complete results only.
 

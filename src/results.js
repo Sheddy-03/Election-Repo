@@ -7,6 +7,11 @@ const CONTESTS = {
   reps: 'House of Reps',
 };
 const FIELDS = ['pdp', 'apc', 'lp', 'accredited', 'valid', 'rejected'];
+/** Fixed sheet-quality list (replaces free-text legibility notes). Order = best to worst. */
+const QUALITY = [
+  'Clear', 'Clear & stamped', 'Stamped', 'Not stamped', 'Not clear / blurred', 'Illegible',
+  'Not visible', 'No record / not uploaded', 'Altered / tampered', 'Wrong PU / wrong form', 'Figures incorrect on sheet',
+];
 
 /** Status per the workbook's column M formula. Values are numbers or null. */
 function computeStatus(r, registered) {
@@ -36,7 +41,9 @@ function parseInput(body) {
     values[f] = n;
   }
   const notes = String(body.notes ?? '').slice(0, 500);
-  return { values, notes };
+  const quality = body.quality === undefined || body.quality === null || body.quality === '' ? null : String(body.quality);
+  if (quality !== null && !QUALITY.includes(quality)) return { error: 'Choose a sheet quality from the list.' };
+  return { values, notes, quality };
 }
 
 function decorate(row) {
@@ -48,4 +55,4 @@ function decorate(row) {
   return { ...row, total, status, turnout };
 }
 
-module.exports = { CONTESTS, FIELDS, computeStatus, parseInput, decorate };
+module.exports = { CONTESTS, FIELDS, QUALITY, computeStatus, parseInput, decorate };

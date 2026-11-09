@@ -9,8 +9,8 @@ async function loadAll() {
   const out = {};
   for (const key of Object.keys(CONTESTS)) {
     out[key] = (await query(`
-      SELECT p.code, p.ward, p.name, p.registered, p.reg_class, p.group80, p.agent_id, u.full_name AS agent_name,
-             r.pdp, r.apc, r.lp, r.accredited, r.valid, r.rejected, r.notes, r.updated_at
+      SELECT p.code, p.ward, p.lga, p.name, p.registered, p.reg_class, p.group80, p.agent_id, u.full_name AS agent_name,
+             r.pdp, r.apc, r.lp, r.accredited, r.valid, r.rejected, r.notes, r.quality, r.updated_at
       FROM polling_units p
       LEFT JOIN results r ON r.pu_code = p.code AND r.contest = $1
       LEFT JOIN users u ON u.id = p.agent_id
@@ -127,7 +127,18 @@ async function buildDashboard(ward) {
     agents: agents.filter((a) => a.active).length,
   };
 
-  return { ward: sel, wards, totals, contests, wardTable, profile, byGroup, agents, flagged: flagged.slice(0, 200), flaggedCount: flagged.length };
+  // Per-unit detail for the analyst view (ranking, shares, results). Always the whole LGA;
+  // the page filters client-side so ranks and "% of LGA voters" stay comparable.
+  const pick = (r) => ({ pdp: r.pdp, apc: r.apc, lp: r.lp, accredited: r.accredited, valid: r.valid, rejected: r.rejected,
+    total: r.total, turnout: r.turnout, status: r.status, quality: r.quality });
+  const units = puRows.map((r, i) => ({
+    code: r.code, name: r.name, ward: r.ward, lga: r.lga || 'Bende', registered: r.registered,
+    reg_class: r.reg_class, group80: r.group80, agent: r.agent_name || null,
+    results: Object.fromEntries(Object.keys(CONTESTS).map((k) => [k, pick(all[k][i])])),
+  }));
+  const lgas = [...new Set(units.map((u) => u.lga))];
+
+  return { ward: sel, wards, lgas, totals, contests, wardTable, profile, byGroup, agents, units, flagged: flagged.slice(0, 200), flaggedCount: flagged.length };
 }
 
 module.exports = { buildDashboard, loadAll };

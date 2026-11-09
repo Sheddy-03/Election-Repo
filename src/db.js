@@ -89,6 +89,9 @@ const SCHEMA = [
     n INTEGER NOT NULL,
     first_ms DOUBLE PRECISION NOT NULL
   )`,
+  // v2 migrations (idempotent)
+  `ALTER TABLE polling_units ADD COLUMN IF NOT EXISTS lga TEXT NOT NULL DEFAULT 'Bende'`,
+  `ALTER TABLE results ADD COLUMN IF NOT EXISTS quality TEXT`,
   `CREATE TABLE IF NOT EXISTS audit_log (
     id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     at TEXT NOT NULL DEFAULT ${NOW},
