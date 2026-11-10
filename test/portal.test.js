@@ -165,3 +165,55 @@ test('workbook import, sheet quality and analyst dashboard data', async () => {
   // agents cannot import
   assert.equal((await call('POST', '/api/admin/import/workbook', {}, qa)).status, 403);
 });
+
+test('2026 register upload, expected voters, targets and party settings', async () => {
+  const admin = await login('boss', 'AdminPass123');
+  // preview: unknown codes and bad numbers are reported, nothing is written
+  const bad = await call('POST', '/api/admin/register-2026', { rows: [{ code: '01-04-02-001', registered: '1,400' }, { code: '99-99-99-999', registered: 5 }, { code: '01-04-02-002', registered: 'abc' }] }, admin);
+  assert.equal(bad.status, 200);
+  assert.equal(bad.json.unknownCount, 1);
+  assert.equal(bad.json.invalidCount, 1);
+  assert.equal((await call('POST', '/api/admin/register-2026', { rows: [{ code: '01-04-02-002', registered: 'abc' }], commit: true }, admin)).status, 400);
+  // commit a valid register (comma-formatted numbers are accepted)
+  const rows = [{ code: '01-04-02-001', registered: '1,400' }, { code: '01-04-02-002', registered: 1000 }, { code: '01-04-13-009', registered: 50 }];
+  const ok = await call('POST', '/api/admin/register-2026', { rows, commit: true, source: 'test.csv' }, admin);
+  assert.equal(ok.status, 200);
+  assert.equal(ok.json.matched, 3);
+  assert.equal(ok.json.missing, 211);
+
+  // settings
+  assert.equal((await call('PUT', '/api/admin/settings', { party_2023: 'xyz' }, admin)).status, 400);
+  const st = await call('PUT', '/api/admin/settings', { party_name: 'Our Party', party_2023: '' }, admin);
+  assert.equal(st.json.party_name, 'Our Party');
+  assert.ok(st.json.register_2026_at);
+
+  // agent: own units only, capped at the 2026 register
+  const ag = await call('POST', '/api/admin/users', { username: 'oagent', full_name: 'Outlook Agent', password: 'TempPass444', pu_codes: ['01-04-02-001'] }, admin);
+  assert.equal(ag.status, 201);
+  const oa = await login('oagent', 'TempPass444');
+  await call('POST', '/api/me/password', { current: 'TempPass444', next: 'OAgentPass1' }, oa);
+  const mine = (await call('GET', '/api/my/outlook', null, oa)).json;
+  assert.deepEqual(mine.units.map((u) => u.code), ['01-04-02-001']);
+  assert.equal(mine.units[0].reg2023, 1290);
+  assert.equal(mine.units[0].reg2026, 1400);
+  assert.equal(mine.settings.party_name, 'Our Party');
+  assert.equal((await call('PUT', '/api/my/outlook/01-04-02-001', { expected_voters: 1500 }, oa)).status, 400, 'above 2026 register');
+  assert.equal((await call('PUT', '/api/my/outlook/01-04-02-002', { expected_voters: 10 }, oa)).status, 403, 'not their unit');
+  assert.equal((await call('PUT', '/api/my/outlook/01-04-02-001', { expected_voters: -1 }, oa)).status, 400);
+  const saved = await call('PUT', '/api/my/outlook/01-04-02-001', { expected_voters: 700, target_votes: 400 }, oa);
+  assert.equal(saved.status, 200);
+  assert.equal(saved.json.expected_voters, 700);
+  // partial update keeps the other field
+  await call('PUT', '/api/my/outlook/01-04-02-001', { expected_voters: 720 }, oa);
+  // admin can override a target on any unit
+  assert.equal((await call('PUT', '/api/admin/outlook/01-04-02-001', { target_votes: 450 }, admin)).status, 200);
+  const all = (await call('GET', '/api/admin/outlook', null, admin)).json;
+  const u = all.units.find((x) => x.code === '01-04-02-001');
+  assert.deepEqual([u.expected, u.target, u.reg2026], [720, 450, 1400]);
+  assert.equal(all.units.length, 214);
+  // agents cannot reach admin outlook, settings or upload
+  assert.equal((await call('GET', '/api/admin/outlook', null, oa)).status, 403);
+  assert.equal((await call('POST', '/api/admin/register-2026', { rows }, oa)).status, 403);
+  const act = (await call('GET', '/api/admin/activity?limit=50', null, admin)).json.activity.map((a) => a.action);
+  assert.ok(act.includes('register2026.upload') && act.includes('outlook.save') && act.includes('settings.update'));
+});
