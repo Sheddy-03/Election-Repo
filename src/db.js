@@ -92,6 +92,18 @@ const SCHEMA = [
   // v2 migrations (idempotent)
   `ALTER TABLE polling_units ADD COLUMN IF NOT EXISTS lga TEXT NOT NULL DEFAULT 'Bende'`,
   `ALTER TABLE results ADD COLUMN IF NOT EXISTS quality TEXT`,
+  // v3: 2026 register, 2027 outlook (expected voters + party target per PU), settings
+  `ALTER TABLE polling_units ADD COLUMN IF NOT EXISTS registered_2026 INTEGER`,
+  `CREATE TABLE IF NOT EXISTS outlook (
+    pu_code TEXT PRIMARY KEY REFERENCES polling_units(code),
+    expected_voters INTEGER,
+    target_votes INTEGER,
+    expected_by INTEGER REFERENCES users(id) ON DELETE SET NULL,
+    expected_at TEXT,
+    target_by INTEGER REFERENCES users(id) ON DELETE SET NULL,
+    target_at TEXT
+  )`,
+  `CREATE TABLE IF NOT EXISTS settings (key TEXT PRIMARY KEY, value TEXT NOT NULL)`,
   `CREATE TABLE IF NOT EXISTS audit_log (
     id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     at TEXT NOT NULL DEFAULT ${NOW},

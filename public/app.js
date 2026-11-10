@@ -8,7 +8,8 @@ const FIELDS = [['pdp', 'PDP', 'p-pdp'], ['apc', 'APC', 'p-apc'], ['lp', 'LP', '
 // ---------- helpers ----------
 function h(tag, attrs, ...kids) {
   const el = document.createElement(tag);
-  if (attrs && (typeof attrs !== 'object' || attrs instanceof Node || Array.isArray(attrs))) { kids.unshift(attrs); attrs = null; }
+  // a non-object second argument (text, a number such as 0, a node or a list) is content, not attributes
+  if (attrs !== null && attrs !== undefined && attrs !== false && (typeof attrs !== 'object' || attrs instanceof Node || Array.isArray(attrs))) { kids.unshift(attrs); attrs = null; }
   for (const [k, v] of Object.entries(attrs || {})) {
     if (v === false || v === null || v === undefined) continue;
     if (k === 'class') el.className = v;
@@ -24,6 +25,8 @@ function h(tag, attrs, ...kids) {
   return el;
 }
 const $app = document.getElementById('app');
+/** replaceChildren that skips empty parts (null/undefined/false) instead of printing them as text. */
+const fill = (el, ...kids) => el.replaceChildren(...kids.flat(Infinity).filter((k) => k !== null && k !== undefined && k !== false));
 const nf = new Intl.NumberFormat('en-NG');
 const fmt = (n) => (n === null || n === undefined ? '—' : nf.format(Math.round(n)));
 const fmt1 = (n) => (n === null || n === undefined ? '—' : nf.format(Math.round(n * 10) / 10));
@@ -81,7 +84,7 @@ function render() {
   $app.append(shell());
 }
 
-async function logout() { try { await api('POST', '/api/logout', {}); } catch { /* ignore */ } me = null; render(); }
+async function logout() { try { await api('POST', '/api/logout', {}); } catch { /* ignore */ } me = null; tab = 'dashboard'; render(); }
 
 // ---------- login & password ----------
 function loginView() {
@@ -97,7 +100,7 @@ function loginView() {
     },
   }, h('div', { class: 'field' }, h('label', { for: 'u' }, 'Username'), u), h('div', { class: 'field', style: 'margin-top:12px' }, h('label', { for: 'p' }, 'Password'), p), err,
   h('div', { style: 'margin-top:16px' }, btn));
-  return h('div', { class: 'login' }, h('div', { class: 'card' }, h('div', { class: 'logo' }, logoSvg()), h('h1', { style: 'font-size:22px' }, 'Bende 2023 Results Portal'),
+  return h('div', { class: 'login' }, h('div', { class: 'card' }, h('div', { class: 'logo' }, logoSvg()), h('h1', { style: 'font-size:22px' }, 'Bende Election Portal'),
     h('p', { class: 'muted small', style: 'margin:4px 0 18px' }, 'Sign in with the account issued to you by the administrator.'), form));
 }
 
@@ -129,23 +132,26 @@ const stopTimers = () => { timers.forEach(clearInterval); timers = []; };
 
 function shell() {
   const isAdmin = me.role === 'admin';
-  const tabs = isAdmin ? [['dashboard', 'Dashboard'], ['agents', 'Agents & assignments'], ['units', 'Polling units'], ['results', 'Results'], ['activity', 'Activity log']] : [];
+  const tabs = isAdmin
+    ? [['dashboard', 'Dashboard'], ['outlook', '2023 vs 2026'], ['agents', 'Agents & assignments'], ['units', 'Polling units'], ['results', 'Results'], ['activity', 'Activity log']]
+    : [['targets', 'My targets'], ['entry', '2023 results entry']];
+  if (!tabs.some(([k]) => k === tab)) tab = tabs[0][0];
   const content = h('main');
-  const nav = isAdmin && h('div', { class: 'tabs', role: 'tablist' }, tabs.map(([k, l]) => h('button', {
+  const nav = h('div', { class: 'tabs', role: 'tablist' }, tabs.map(([k, l]) => h('button', {
     role: 'tab', 'aria-selected': String(tab === k),
     onclick: () => { tab = k; stopTimers(); [...nav.children].forEach((b, i) => b.setAttribute('aria-selected', String(tabs[i][0] === k))); show(); },
   }, l)));
   function show() {
     content.replaceChildren();
-    if (!isAdmin) return content.append(agentHome());
-    ({ dashboard: dashboardView, agents: agentsView, units: unitsView, results: resultsView, activity: activityView })[tab](content);
+    if (!isAdmin) return tab === 'entry' ? content.append(agentHome()) : agentOutlook(content);
+    ({ dashboard: dashboardView, outlook: outlookView, agents: agentsView, units: unitsView, results: resultsView, activity: activityView })[tab](content);
   }
   const top = h('div', { class: 'topbar' }, h('div', { class: 'in' },
-    h('div', { class: 'brand' }, h('div', { class: 'logo' }, logoSvg()), h('div', 'Bende 2023 Results ', h('span', { class: 'muted small' }, isAdmin ? '· Admin centre' : '· Data entry'))),
+    h('div', { class: 'brand' }, h('div', { class: 'logo' }, logoSvg()), h('div', 'Bende Election Portal ', h('span', { class: 'muted small' }, isAdmin ? '· Admin centre' : '· Agent'))),
     h('div', { class: 'spacer' }),
     h('div', { class: 'who' }, h('div', me.full_name), h('div', me.role === 'admin' ? 'Administrator' : 'Data entry agent')),
     h('button', { class: 'btn ghost small', onclick: () => changePasswordView(false) }, 'Password'),
-    h('button', { class: 'btn ghost small', onclick: logout }, 'Sign out')), nav || null);
+    h('button', { class: 'btn ghost small', onclick: logout }, 'Sign out')), nav);
   show();
   return h('div', top, content);
 }
@@ -234,7 +240,7 @@ function agentHome() {
     const { units } = await api('GET', '/api/my/units');
     const total = units.length * 3;
     const done = units.reduce((n, u) => n + Object.values(u.status).filter((s) => s === 'Complete').length, 0);
-    root.replaceChildren(
+    fill(root,
       h('div', { class: 'head' }, h('h2', 'My polling units'), h('span', { class: 'muted' }, `${units.length} assigned`)),
       units.length ? h('div', { class: 'card' }, h('div', { class: 'row', style: 'align-items:center' }, h('div', { class: 'field' }, h('div', { class: 'small muted' }, 'Progress across Presidential, Senate and House of Reps'), h('div', { class: 'bar ok', style: 'margin-top:6px' }, h('i', { style: `width:${total ? (done / total) * 100 : 0}%` }))), h('b', `${done} / ${total} complete`))) : null,
       units.length ? h('div', { class: 'grid unitgrid' }, units.map((u) => h('button', { class: 'unit', onclick: () => openUnit(u, load) },

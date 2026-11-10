@@ -6,6 +6,7 @@ const { query, tx, ready, NOW } = require('./db');
 const A = require('./auth');
 const { CONTESTS, FIELDS, QUALITY, parseInput, decorate } = require('./results');
 const { buildDashboard, loadAll } = require('./dashboard');
+const O = require('./outlook');
 
 const PORT = Number(process.env.PORT || 3000);
 const PUBLIC = path.join(__dirname, '..', 'public');
@@ -33,7 +34,7 @@ async function readBody(req) {
   }
   return new Promise((resolve, reject) => {
     let size = 0; const chunks = [];
-    req.on('data', (c) => { size += c.length; if (size > 100_000) { reject(new HttpError(413, 'Request too large.')); req.destroy(); } else chunks.push(c); });
+    req.on('data', (c) => { size += c.length; if (size > 1_000_000) { reject(new HttpError(413, 'Request too large.')); req.destroy(); } else chunks.push(c); });
     req.on('end', () => {
       if (!chunks.length) return resolve({});
       try { resolve(JSON.parse(Buffer.concat(chunks).toString('utf8'))); } catch { reject(new HttpError(400, 'Invalid JSON.')); }
@@ -206,6 +207,7 @@ async function api(req, res, url) {
   }
   if (p === '/api/me' && m === 'GET') { needAuth(user); return send(res, 200, publicUser(user)); }
   if (p === '/api/meta' && m === 'GET') { needAuth(user); return send(res, 200, { qualities: QUALITY, contests: CONTESTS }); }
+  if (p === '/api/settings' && m === 'GET') { needAuth(user); needChanged(user); return send(res, 200, await O.getSettings()); }
   if (p === '/api/me/password' && m === 'POST') {
     needAuth(user);
     const row = first(await query('SELECT password_hash FROM users WHERE id = $1', [user.id]));
@@ -219,6 +221,12 @@ async function api(req, res, url) {
   // ----- data entry agent -----
   if (parts[0] === 'my') {
     needAgent(user);
+    if (parts[1] === 'outlook' && parts.length === 2 && m === 'GET') {
+      return send(res, 200, { settings: await O.getSettings(), units: await O.outlookRows(await loadAll(), { agentId: user.id }) });
+    }
+    if (parts[1] === 'outlook' && parts.length === 3 && m === 'PUT') {
+      return send(res, 200, await O.saveOutlook(user, parts[2], body, { asAdmin: false }, audit));
+    }
     if (parts[1] === 'units' && parts.length === 2 && m === 'GET') {
       const all = await loadAll();
       const mine = {};
@@ -242,6 +250,26 @@ async function api(req, res, url) {
     needAdmin(user);
 
     if (parts[1] === 'dashboard' && m === 'GET') return send(res, 200, await buildDashboard(url.searchParams.get('ward')));
+
+    // ----- 2023 vs 2026/27 comparison -----
+    if (parts[1] === 'outlook' && parts.length === 2 && m === 'GET') {
+      return send(res, 200, { settings: await O.getSettings(), units: await O.outlookRows(await loadAll()) });
+    }
+    if (parts[1] === 'outlook' && parts.length === 3 && m === 'PUT') {
+      return send(res, 200, await O.saveOutlook(user, parts[2], body, { asAdmin: true }, audit));
+    }
+    if (parts[1] === 'settings' && m === 'PUT') {
+      const patch = O.cleanSettings(body);
+      await tx(async (q) => { await O.saveSettings(q, patch); await audit(q, user, 'settings.update', { detail: JSON.stringify(patch) }); });
+      return send(res, 200, await O.getSettings());
+    }
+    if (parts[1] === 'register-2026' && m === 'POST') {
+      const plan = await O.planRegister(body.rows);
+      if (body.commit === true) await O.commitRegister(user, plan, body.source, audit);
+      return send(res, 200, { committed: body.commit === true, matched: plan.updates.length, missing: plan.missing.length, missingSample: plan.missing.slice(0, 20),
+        unknown: plan.unknown, unknownCount: plan.unknownCount, invalid: plan.invalid, invalidCount: plan.invalidCount, duplicates: plan.duplicates,
+        total2023: plan.total2023, totalNew: plan.totalNew, bigChanges: plan.bigChanges });
+    }
 
     if (parts[1] === 'activity' && m === 'GET') {
       const rows = await query('SELECT id, at, username, action, contest, pu_code, detail FROM audit_log ORDER BY id DESC LIMIT $1', [Math.min(Number(url.searchParams.get('limit')) || 50, 300)]);
@@ -395,7 +423,7 @@ async function handler(req, res) {
     const url = new URL(req.url, 'http://x');
     if (url.pathname.startsWith('/api/')) { await ready(); await api(req, res, url); } else serveStatic(req, res, url);
   } catch (e) {
-    if (e instanceof HttpError) return send(res, e.status, { error: e.message, ...(e.extra || {}) });
+    if (e instanceof HttpError || e instanceof O.OutlookError) return send(res, e.status, { error: e.message, ...(e.extra || {}) });
     console.error(e);
     send(res, 500, { error: 'Server error.' });
   }

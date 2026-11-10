@@ -1,4 +1,4 @@
-# Bende 2023 Election Results Portal
+# Bende Election Portal
 
 Results-entry portal built from `Bende_2023_Election_Results.xlsx` (214 polling units, 13 wards, 112,155 registered voters; Presidential, Senate and House of Reps).
 
@@ -16,6 +16,19 @@ Filters (contest, ward) sit in one bar at the top and drive every section.
 - **Results:** party share, results by ward (leader, margin, turnout), top 10 units by votes cast and by turnout, all contests at a glance.
 - **Data quality:** result status, result-sheet quality, results needing review (with the reason) and register checks (units under 100 registered voters).
 Every chart has hover/keyboard tooltips and a "View as table" equivalent. Colours were validated for colour-blind safety in light and dark mode.
+
+## 2023 vs 2026 comparison and agent targets
+**Admin → "2023 vs 2026"** compares the 2023 election with the upcoming one, for Bende LGA, each ward and each polling unit:
+- **Registered voters:** 2023 register vs the 2026 register (uploaded by admin).
+- **Voters:** 2023 votes cast (choose Presidential, Senate or House of Reps) vs **expected voters** for the upcoming election (entered by agents).
+- **Party target:** votes the party needs at each polling unit (agents enter for their own units; admin can set or correct any).
+- Charts: column chart (2023 vs now, with target line), donut charts (target progress, register by unit size), ward bar charts, biggest register changes, agent progress, full sortable table, CSV export.
+
+**Upload the 2026 register:** "Upload 2026 register" → choose the INEC `.xlsx` or `.csv` → confirm the PU-code and registered-voters columns → **Check file** (shows matched units, missing units, unknown codes, invalid numbers, large changes) → **Save**. Units not in the file keep their current 2026 value.
+
+**Party settings:** set the party name when it is announced (all labels update). Optionally link it to PDP/APC/LP to show its 2023 votes beside the targets.
+
+**Agents → "My targets"** (opens first): their units only, with registered 2023 → 2026, 2023 votes per contest, expected voters and target, a progress donut, a 2023-vs-now chart and an **Update** button per unit. Values above the unit's 2026 register are refused. The 2023 results entry remains under **"2023 results entry"**.
 
 ## Workbook import
 `data/workbook_results.json` holds the results from `Bende_2023_Election_Results_1.xlsx`. Admins import it from **Results → Import workbook results** (keeps anything already entered unless "overwrite" is ticked). Rules: Total/Turnout/Status are recalculated; rows where all six figures were 0 are imported as blank; free-text notes are mapped to the fixed sheet-quality list and kept as notes. To regenerate from a newer workbook:
